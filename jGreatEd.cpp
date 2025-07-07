@@ -39,8 +39,5 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 int _tmain( int argc, char ** argv, char ** env )
 {
 	int _result = wWinMain( GetModuleHandle( nullptr ), nullptr, GetCommandLineW(), SW_SHOW );
-#ifdef _DEBUG
-	printAllocStat();
-#endif
 	return _result;
 }
