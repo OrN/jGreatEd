@@ -21,6 +21,13 @@ CFDSDisk::CFDSDisk()
 
 }
 
+VOID CFDSDisk::LoadNESDisk(CFDSStream& stream)
+{
+	CFDSDiskSide fdsSide;
+	fdsSide.LoadNESFiles(stream);
+	m_mSide[fdsSideA] = fdsSide;
+}
+
 VOID CFDSDisk::LoadDiskSide( CFDSStream & stream )
 {
 	CFDSDiskSide fdsSide;
@@ -32,6 +39,14 @@ VOID CFDSDisk::LoadDiskSide( CFDSStream & stream )
 	}
 	ptr.QuadPart += FDS_SIDE_SIZE;
 	stream.Seek( ptr, SEEK_SET );
+}
+
+VOID CFDSDisk::DumpNES(CFDSStream& stream, FDS_DISK_SIDE side)
+{
+	LARGE_INTEGER ptr = stream.CurrentPointer();
+	auto fdsSide = m_mSide.find(side);
+	if (fdsSide != m_mSide.end())
+		fdsSide->second.DumpNESFiles(stream);
 }
 
 VOID CFDSDisk::DumpDisk( CFDSStream & stream, FDS_DISK_SIDE side )

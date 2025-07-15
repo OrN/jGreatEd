@@ -18,7 +18,73 @@
 CFDSDiskSide::CFDSDiskSide()
 	: m_uSelected( -1 )
 {
+}
 
+VOID CFDSDiskSide::SkipNESBank(CFDSStream& stream, USHORT size)
+{
+	LARGE_INTEGER ptr = stream.CurrentPointer();
+	ptr.QuadPart += size;
+	stream.Seek(ptr, SEEK_SET);
+}
+
+VOID CFDSDiskSide::LoadNESBank(CFDSStream& stream, FDS_FILE_TYPE type, BYTE ID, USHORT ptr, USHORT size)
+{
+	CFDSDiskFile bankFile;
+	FDS_FILE_HEADER_BLOCK bankHeader;
+	bankHeader.uFileId = ID;
+	bankHeader.uFileNumber = ID;
+	bankHeader.fft = type;
+	bankHeader.uFileSize = size;
+	bankHeader.uTargetPtr = ptr;
+	bankFile.LoadNESFile(stream, bankHeader, size);
+	m_vFile.push_back(bankFile);
+}
+
+VOID CFDSDiskSide::LoadNESFiles(CFDSStream& stream)
+{
+	m_nesHeader = stream.Read<NES_HEADER>();
+
+	LARGE_INTEGER p15;
+	LARGE_INTEGER p16;
+	LARGE_INTEGER p32;
+	LARGE_INTEGER p48;
+	LARGE_INTEGER p64;
+
+	// Map PRG-ROM
+	LoadNESBank(stream, PRG, 6, 0x6000, 0x2000); // 6000 (0)
+	LoadNESBank(stream, PRG, 8, 0xA000, 0x2000); // 6000 (2)
+
+	p15 = stream.CurrentPointer(); p15.QuadPart += 0x129F; // CORRECT
+	LoadNESBank(stream, PRG, 5, 0xC000, 0x2000); // bank0
+
+	p32 = stream.CurrentPointer(); p32.QuadPart += 0x470; // CORRECT
+	SkipNESBank(stream, 0x2000); // bank1
+
+	p48 = stream.CurrentPointer(); p48.QuadPart += 0x5D0; // CORRECT
+	SkipNESBank(stream, 0x2000); // bank2
+
+	p64 = stream.CurrentPointer(); p64.QuadPart += 0x2B4; // CORRECT
+	SkipNESBank(stream, 0x2000); // bank3
+
+	LoadNESBank(stream, PRG, 7, 0x8000, 0x2000); // 6000 (1)
+	LoadNESBank(stream, PRG, 9, 0xE000, 0x2000); // e000
+
+	// Map CHR-ROM
+	LoadNESBank(stream, CHR, 1, 0x0000, 0x2000); // Bank 0
+
+	p16 = stream.CurrentPointer(); p16.QuadPart += 0x760;
+	SkipNESBank(stream, 0x2000); // Bank 1
+
+	// ROM Data
+	stream.Seek(p15, SEEK_SET); LoadNESBank(stream, PRG, 15, 0xD29F, 0x1);
+	stream.Seek(p16, SEEK_SET); LoadNESBank(stream, CHR, 16, 0x760, 0x40);
+	stream.Seek(p32, SEEK_SET); LoadNESBank(stream, PRG, 32, 0xC470, 0xE2F);
+	stream.Seek(p48, SEEK_SET); LoadNESBank(stream, PRG, 48, 0xC5D0, 0xCCF);
+	stream.Seek(p64, SEEK_SET); LoadNESBank(stream, PRG, 64, 0xC2B4, 0xF4C);
+
+	FDS_DISK_INFO_BLOCK diskInfo;
+	diskInfo.uBootCode = 15;
+	m_fdsInfo = diskInfo;
 }
 
 VOID CFDSDiskSide::LoadFiles( CFDSStream & stream )
@@ -53,6 +119,58 @@ VOID CFDSDiskSide::LoadFiles( CFDSStream & stream )
 		file.LoadFile( stream );
 		m_vFile.push_back( file );
 	}
+}
+
+VOID CFDSDiskSide::DumpNESFiles(CFDSStream& stream)
+{
+	// Write Header
+	stream.Write(m_nesHeader);
+
+	// PRG
+	DumpNESFile(stream, 6, 0, 0x0000);
+	DumpNESFile(stream, 8, 0, 0x0000);
+	DumpNESFile(stream, 5, 0, 0x0000);
+	DumpNESFile(stream, 32, 5, 0x470);
+	DumpNESFile(stream, 48, 5, 0x5D0);
+	DumpNESFile(stream, 64, 5, 0x2B4);
+	DumpNESFile(stream, 7, 0, 0x0000);
+	DumpNESFile(stream, 9, 0, 0x0000);
+
+	// CHR
+	DumpNESFile(stream, 1, 0, 0x0000);
+	DumpNESFile(stream, 16, 1, 0x760);
+}
+
+VOID CFDSDiskSide::DumpNESFile(CFDSStream& stream, BYTE id, BYTE parentID, size_t offset)
+{
+	BYTE fileData[0x2000];
+
+	// Clear data
+	for (size_t i = 0; i < 0x2000; i++)
+		fileData[i] = 0x00;
+
+	// Write parent
+	for (auto& file : m_vFile)
+	{
+		if (file.GetFileId() != parentID)
+			continue;
+
+		for (size_t i = 0; i < file.GetFileData().uFileSize; i++)
+			fileData[i] = file[i];
+	}
+
+	// Write file data
+	for (auto& file : m_vFile)
+	{
+		if (file.GetFileId() != id)
+			continue;
+
+		for (size_t i = 0; i < file.GetFileData().uFileSize; i++)
+			fileData[offset + i] = file[i];
+	}
+
+	// Write final data to file
+	stream.Write(fileData, 0x2000);
 }
 
 VOID CFDSDiskSide::DumpFiles( CFDSStream & stream )

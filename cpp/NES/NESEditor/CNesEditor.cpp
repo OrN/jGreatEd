@@ -55,6 +55,10 @@ VOID CNesEditor::LoadFile( LPCTSTR pszFile )
 	}
 
 	m_file.LoadFile( pszFile );
+
+	if (m_file.IsNES())
+		m_eptr.Version(ver_NES);
+
 	LoadGame();
 }
 
@@ -71,6 +75,11 @@ VOID CNesEditor::SaveFile( LPCTSTR pszFile )
 	{
 		throw std::exception( "Can't write to file. It is possible that the file is read only or locked to write." );
 	}
+}
+
+BOOL CNesEditor::IsNES()
+{
+	return m_file.IsNES();
 }
 
 BOOL CNesEditor::IsFileLoaded()

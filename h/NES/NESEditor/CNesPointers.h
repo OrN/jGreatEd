@@ -31,9 +31,18 @@ typedef union _tagNES_EPOINTER
 
 typedef enum _tagNES_VERSION : TCHAR
 {
-	ver_J = _T( 'J' ),
+	ver_J = _T('J'),
+	ver_NES = _T('N'),
 	ver_Unknown = _T( '0' )
 } NES_VERSION, *PNES_VERSION;
+
+typedef enum _tagPTR_TYPE
+{
+	PTR_LOHI_REFERENCE,
+	PTR_REFERENCE,
+	PTR_INDIRECT_REFERENCE,
+	PTR_DIRECT_REFERENCE,
+} PTR_TYPE, * PPTR_TYPE;
 
 typedef enum _tagNES_EPOINTERS
 {
@@ -185,9 +194,12 @@ class CNesPointers
 	std::map<NES_EPOINTERS, NES_EPOINTER>		m_eptr;
 
 	VOID			LoadPointers();
+	VOID			LoadPointersNES();
 	VOID			LoadPointersJ();
 
 	VOID			LoadSharedPointers();
+
+	VOID			TestPointerReferencedData(CNESFile& file, NES_EPOINTERS lo, bool debug, const BYTE* testData, int testCount);
 
 public:
 	CNesPointers( CNESFile & mmc3 );
@@ -197,4 +209,5 @@ public:
 
 	VOID			Select( NES_EPOINTERS eptr ) const;
 	USHORT	&		Pointer( NES_EPOINTERS eptr ) const;
+	VOID			TestPointers(CNESFile& file);
 };

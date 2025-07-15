@@ -19,6 +19,7 @@
 #include <WindowsX.h>
 #include <CommCtrl.h>
 #include <CommDlg.h>
+#include <VersionHelpers.h>
 
 #include <tchar.h>
 #include <vector>

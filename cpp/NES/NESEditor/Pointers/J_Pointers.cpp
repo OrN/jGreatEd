@@ -15,6 +15,12 @@
 
 #include "h/NES/NESEditor/CNesPointers.h"
 
+VOID CNesPointers::LoadPointersNES()
+{
+	m_eptr[eVRAMAddrTableHi].eptr = NES_J_VRAM_NES_TBL_PTR_HI;
+	m_eptr[eVRAMAddrTableLo].eptr = NES_J_VRAM_NES_TBL_PTR_LO;
+}
+
 VOID CNesPointers::LoadPointersJ()
 {
 	m_eptr[ eFilesListPtrLo ].eptr = NES_J_FILES_LIST_PTR_LO;
@@ -164,4 +170,158 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eSpriteAttributes ].eptr = NES_J_SPRITE_ATTRIBUTE;
 	m_eptr[ eRedPirahnaWorld ].eptr = NES_J_RED_PIRAHNA_WORLD;
 	m_eptr[ eRedPirahnaAttr ].eptr = NES_J_RED_PIRAHNA_ATTR;
+}
+
+VOID CNesPointers::TestPointers(CNESFile& file)
+{
+	printf("Testing pointers...\n");
+
+	const BYTE testDataFilesList[16] = { 0xe4, 0xc0, 0xe8, 0xc0, 0xea, 0xc0, 0xee, 0xc0, 0xc0, 0x01, 0xc0, 0x05, 0xc0, 0x0f, 0xc0, 0xff };
+	TestPointerReferencedData(file, eFilesListPtrLo, false, testDataFilesList, 8);
+
+	const BYTE testDataWorldAreasOffsets[16] = { 0x00, 0x00, 0x05, 0x05, 0x0a, 0x0a, 0x0e, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+	TestPointerReferencedData(file, eWorldAreasOffsets, false, testDataWorldAreasOffsets, 8);
+
+	const BYTE testDataEnemyAddrHOffset[16] = { 0x14, 0x14, 0x04, 0x04, 0x12, 0x12, 0x00, 0x00, 0xd0, 0xd0, 0xc5, 0xc5, 0xf5, 0xf5, 0xc5, 0xc5 };
+	TestPointerReferencedData(file, eEnemyAddrHOffset, false, testDataEnemyAddrHOffset, 8);
+
+	const BYTE testDataLevelAddrHOffset[16] = { 0x14, 0x14, 0x04, 0x04, 0x12, 0x12, 0x00, 0x00, 0x53, 0x53, 0xc8, 0xc8, 0xc6, 0xc6, 0xc8, 0xc8 };
+	TestPointerReferencedData(file, eLevelAddrHOffset, false, testDataLevelAddrHOffset, 8);
+
+	const BYTE testDataWorldAreas[16] = { 0x20, 0x20, 0x2c, 0x2c, 0x40, 0x40, 0x21, 0x21, 0x60, 0x60, 0x22, 0x22, 0x2c, 0x2c, 0x00, 0x00 };
+	TestPointerReferencedData(file, eWorldAreas, false, testDataWorldAreas, 8);
+
+	const BYTE testDataEnemy[16] = { 0xd0, 0xd0, 0xc5, 0xc5, 0xf5, 0xf5, 0xc5, 0xc5, 0x1c, 0x1c, 0xc6, 0xc6, 0x5d, 0x5d, 0xc6, 0xc6 };
+	TestPointerReferencedData(file, eEnemyPtr, false, testDataEnemy, 8);
+
+	const BYTE testDataLevel[16] = { 0x53, 0x53, 0xc8, 0xc8, 0xc6, 0xc6, 0xc8, 0xc8, 0x43, 0x43, 0xc9, 0xc9, 0xde, 0xde, 0xc9, 0xc9 };
+	TestPointerReferencedData(file, eLevelPtr, true, testDataLevel, 8);
+
+	const BYTE testDataVRAM[16] = { 0x01, 0x01, 0x03, 0x03, 0x8d, 0x8d, 0x6b, 0x6b, 0xb1, 0xb1, 0x6b, 0x6b, 0xd5, 0xd5, 0x6b, 0x6b };
+	TestPointerReferencedData(file, eVRAMAddrTableLo, false, testDataVRAM, 8);
+
+	// FIX: Not sure?
+	const BYTE testDataLoopSlaveData[16] = { 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02 };
+	TestPointerReferencedData(file, eLoopSlaveDataPtr, false, testDataLoopSlaveData, 8);
+
+	const BYTE testDataLoopCount[2] = { 0x0c, 0x0c };
+	TestPointerReferencedData(file, eLoopCount, false, testDataLoopCount, 1);
+
+	const BYTE testDataMetaTiles[16] = { 0xed, 0x69, 0x7d, 0x6a, 0x3d, 0x6b, 0x71, 0x6b, 0x69, 0x24, 0x6a, 0x24, 0x6b, 0x24, 0x6b, 0x24 };
+	TestPointerReferencedData(file, eMetatiesPtrLo, false, testDataMetaTiles, 8);
+}
+
+VOID CNesPointers::TestPointerReferencedData(CNESFile& file, NES_EPOINTERS lo, bool debug, const BYTE* testData, int testCount)
+{
+	const char* name = "Unknown";
+	NES_EPOINTERS hi = eFilesListPtrLo;
+	PTR_TYPE type = PTR_LOHI_REFERENCE;
+
+	switch (lo)
+	{
+		case eEnemyPtr:
+			name = "Enemy";
+			type = PTR_REFERENCE;
+			break;
+		case eLevelPtr:
+			name = "Level";
+			type = PTR_REFERENCE;
+			break;
+		case eEnemyAddrHOffset:
+			name = "Enemy Address Horizontal Offset";
+			type = PTR_REFERENCE;
+			break;
+		case eLevelAddrHOffset:
+			name = "Level Address Horizontal Offset";
+			type = PTR_REFERENCE;
+			break;
+		case eWorldAreasOffsets:
+			name = "World Areas Offsets";
+			type = PTR_REFERENCE;
+			break;
+		case eWorldAreas:
+			name = "World Areas";
+			type = PTR_REFERENCE;
+			break;
+		case eLoopSlaveDataPtr:
+			name = "Loop Slave Data";
+			type = PTR_REFERENCE;
+			break;
+		case eFilesListPtrLo:
+			hi = eFilesListPtrHi;
+			name = "Files List";
+			type = PTR_INDIRECT_REFERENCE;
+			break;
+		case eVRAMAddrTableLo:
+			hi = eVRAMAddrTableHi;
+			name = "VRAM Address Table";
+			break;
+		case eLoopCount:
+			name = "Loop Count";
+			type = PTR_DIRECT_REFERENCE;
+			break;
+		case eMetatiesPtrLo:
+			hi = eMetatiesPtrHi;
+			name = "Metatiles";
+			type = PTR_INDIRECT_REFERENCE;
+			break;
+	}
+
+	USHORT uPtrHi, uPtrLo, uPtr;
+	uPtrHi = Pointer(hi);
+	uPtrLo = Pointer(lo);
+
+	// Initialize pointer
+	switch (type)
+	{
+		case PTR_REFERENCE:
+			uPtr = uPtrLo;
+			printf("Testing reference '%s', Ptr: 0x%04x, ", name, uPtr);
+			break;
+		case PTR_LOHI_REFERENCE:
+			uPtr = MAKEWORD(uPtrLo, uPtrHi);
+			printf("Testing LoHi reference '%s', Ptr: 0x%04x, ", name, uPtr);
+			break;
+		case PTR_INDIRECT_REFERENCE:
+			printf("Testing indirect reference '%s', PtrLo: 0x%04x, PtrHi: 0x%04x ", name, uPtrLo, uPtrHi);
+			break;
+		case PTR_DIRECT_REFERENCE:
+			uPtr = m_eptr[lo].ptr;
+			printf("Testing direct reference '%s', Ptr: 0x%04x ", name, uPtr);
+			break;
+	}
+
+	bool matches = true;
+
+	for (int i = 0; i < testCount; i++)
+	{
+		BYTE dataLo = 0;
+		BYTE dataHi = 0;
+
+		// Grab data based on type
+		switch (type)
+		{
+			case PTR_REFERENCE:
+			case PTR_DIRECT_REFERENCE:
+			case PTR_LOHI_REFERENCE:
+				dataLo = file.Data<BYTE>(uPtr + i);
+				dataHi = dataLo;
+				break;
+			case PTR_INDIRECT_REFERENCE:
+				dataLo = file.Data<BYTE>(uPtrLo + i);
+				dataHi = file.Data<BYTE>(uPtrHi + i);
+				break;
+		}
+		
+		// Print out the data
+		if (debug)
+			printf("0x%02x, 0x%02x, ", dataLo, dataHi);
+
+		// Test the data
+		int testPointer = i * 2;
+		if (dataLo != testData[testPointer] || dataHi != testData[testPointer + 1])
+			matches = false;
+	}
+
+	printf("... %s!\n", matches ? "GOOD" : "BAD");
 }

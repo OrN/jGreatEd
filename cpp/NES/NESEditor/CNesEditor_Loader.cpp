@@ -18,12 +18,15 @@
 VOID CNesEditor::LoadGame()
 {
 	m_file.InitBootFiles();
+
 	m_metaTiles.Load();
 	m_player.LoadData();
 	m_loop.Load();
 	m_hack.LoadData();
 	m_demo.LoadData();
 	LoadLevelsSets();
+
+	m_eptr.TestPointers(m_file);
 }
 
 VOID CNesEditor::LoadLevelsSets()

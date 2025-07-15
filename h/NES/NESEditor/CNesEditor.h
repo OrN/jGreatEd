@@ -67,6 +67,7 @@ public:
 
 	VOID						LoadFile( LPCTSTR pszFile );
 	VOID						SaveFile( LPCTSTR pszFile );
+	BOOL						IsNES();
 	BOOL						IsFileLoaded();
 	LPCTSTR						Filename();
 

@@ -23,7 +23,7 @@ extern const COLORREF g_crNesColor[];
 extern const CNesColors g_hbmColor;
 
 #define		NES_FDS_BEGIN			0x6000
-#define		NES_FDS_BIOS			0xE000
+#define		NES_FDS_BIOS			0x10000
 #define		NES_RAM_SIZE			( NES_FDS_BIOS - NES_FDS_BEGIN )
 #define		NES_PPU_CHR_ROM_SIZE	0x2000
 #define		NES_PPU_VRAM_SIZE		0x1F00
@@ -198,6 +198,7 @@ public:
 	BOOL					SaveFile( LPCTSTR pszFile );
 	BOOL					SaveFile();
 	BOOL					IsFileLoaded() const;
+	BOOL					IsNES();
 	CString					Filename();
 	BOOL					EnumDisks( std::map<BYTE, BYTE> & mDisks );
 	VOID					SelectDisk( BYTE diskId, FDS_DISK_SIDE side );

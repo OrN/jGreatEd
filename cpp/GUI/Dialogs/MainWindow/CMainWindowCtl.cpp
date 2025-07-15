@@ -82,7 +82,7 @@ VOID CMainWindow::Ctl_OnOpen()
 
 	try
 	{
-		CString strFile = OpenFile( TEXT( "Super Mario Brothers 2 (Japan).fds" ), TEXT( "Family Disk System ROM (*.fds)" ), TEXT( "*.fds" ), 0 ).c_str();
+		CString strFile = OpenFile(TEXT(""), TEXT("Super Mario Brothers 2 ROM (*.fds, *.nes)"), TEXT("*.fds;*.nes"), 0).c_str();
 
 		if ( strFile.GetLength() > 0 )
 		{
@@ -102,7 +102,11 @@ VOID CMainWindow::Ctl_OnSave( BOOL fSaveAs )
 	CString sFile;
 	if ( fSaveAs )
 	{
-		sFile = SaveFile( m_nEditor.Filename(), TEXT( "Family Disk System ROM (*.fds)" ), TEXT( "*.fds" ), 0 ).c_str();
+		if (m_nEditor.IsNES())
+			sFile = SaveFile(m_nEditor.Filename(), TEXT("Nintendo Entertainment System ROM (*.nes)"), TEXT("*.nes"), 0).c_str();
+		else
+			sFile = SaveFile( m_nEditor.Filename(), TEXT( "Family Disk System ROM (*.fds)" ), TEXT( "*.fds" ), 0 ).c_str();
+
 		if ( !sFile.GetLength() )
 		{
 			return;

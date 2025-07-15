@@ -61,6 +61,11 @@ BOOL CNESFile::IsFileLoaded() const
 	return m_file.IsFileLoaded();
 }
 
+BOOL CNESFile::IsNES()
+{
+	return m_file.IsNES();
+}
+
 CString CNESFile::Filename()
 {
 	return m_file.Filename();

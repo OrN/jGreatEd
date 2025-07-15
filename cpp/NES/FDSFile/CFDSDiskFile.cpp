@@ -21,6 +21,14 @@ CFDSDiskFile::CFDSDiskFile()
 
 }
 
+VOID CFDSDiskFile::LoadNESFile(CFDSStream& stream, FDS_FILE_HEADER_BLOCK header, DWORD size)
+{
+	m_flInfo = header;
+	m_vData.clear();
+	m_vData.insert(m_vData.end(), size, 0);
+	stream.ReadBlock(m_vData);
+}
+
 VOID CFDSDiskFile::LoadFile( CFDSStream & stream )
 {
 	if ( FileHeaderBlock != stream.Read<BYTE>() )

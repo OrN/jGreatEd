@@ -135,18 +135,23 @@ public:
 		throw std::exception( "File cannot be read" );
 	}
 
-	VOID		ReadBlock( std::vector<BYTE> & data )
+	VOID		ReadBlock( std::vector<BYTE> & data, size_t offset, size_t size )
 	{
 		if ( INVALID_HANDLE_VALUE != m_hFile )
 		{
 			DWORD dwLength = 0;
-			if ( ReadFile( m_hFile, data.data(), DWORD( data.size() & 0xFFFFFFFF ), &dwLength, nullptr ) && dwLength == data.size() )
+			if ( ReadFile( m_hFile, data.data() + offset, DWORD(size & 0xFFFFFFFF ), &dwLength, nullptr ) && dwLength == size )
 			{
 				return;
 			}
 		}
 
 		throw std::exception( "File cannot be read" );
+	}
+
+	VOID		ReadBlock(std::vector<BYTE>& data)
+	{
+		ReadBlock(data, 0, data.size());
 	}
 
 	VOID		WriteBlock( const std::vector<BYTE> & data )
@@ -163,18 +168,23 @@ public:
 		throw std::exception( "File cannot be written" );
 	}
 
-	template<class T>				VOID Write( const T & data )
+	template<class T>				VOID Write(const T& data, DWORD size)
 	{
-		if ( INVALID_HANDLE_VALUE != m_hFile )
+		if (INVALID_HANDLE_VALUE != m_hFile)
 		{
 			DWORD dwLength = 0;
-			if ( WriteFile( m_hFile, &data, sizeof( data ), &dwLength, nullptr ) && dwLength == sizeof( data ) )
+			if (WriteFile(m_hFile, &data, size, &dwLength, nullptr) && dwLength == size)
 			{
 				return;
 			}
 		}
 
-		throw std::exception( "File cannot be written" );
+		throw std::exception("File cannot be written");
+	}
+
+	template<class T>				VOID Write( const T & data )
+	{
+		return Write(data, sizeof(data));
 	}
 };
 
@@ -186,6 +196,7 @@ class CFDSDiskFile
 	
 public:
 	CFDSDiskFile();
+	VOID											LoadNESFile(CFDSStream& stream, FDS_FILE_HEADER_BLOCK header, DWORD size);
 	VOID											LoadFile( CFDSStream & stream );
 	VOID											DumpFile( CFDSStream & stream );
 	BYTE											GetFileId();
@@ -198,12 +209,18 @@ public:
 class CFDSDiskSide
 {
 	FDS_DISK_INFO_BLOCK								m_fdsInfo;
+	NES_HEADER										m_nesHeader;
 	std::vector<CFDSDiskFile>						m_vFile;
 	size_t											m_uSelected;
 
 public:
 	CFDSDiskSide();
+	VOID											SkipNESBank(CFDSStream& stream, USHORT size);
+	VOID											LoadNESBank(CFDSStream& stream, FDS_FILE_TYPE type, BYTE ID, USHORT ptr, USHORT size);
+	VOID											LoadNESFiles(CFDSStream& stream);
 	VOID											LoadFiles( CFDSStream & stream );
+	VOID											DumpNESFile(CFDSStream& stream, BYTE id, BYTE parentID, size_t offset);
+	VOID											DumpNESFiles(CFDSStream& stream);
 	VOID											DumpFiles( CFDSStream & stream );
 	CFDSDiskFile &									SelectFile( BYTE uId );
 	CFDSDiskFile &									File();
@@ -219,10 +236,12 @@ class CFDSDisk
 
 public:
 	CFDSDisk();
+	VOID								LoadNESDisk(CFDSStream& stream);
 	VOID								LoadDiskSide( CFDSStream & stream );
 	CFDSDiskSide &						SelectSide( FDS_DISK_SIDE fds );
 	CFDSDiskSide &						Side();
 
+	VOID								DumpNES(CFDSStream& stream, FDS_DISK_SIDE side = fdsSideA);
 	VOID								DumpDisk( CFDSStream & stream, FDS_DISK_SIDE side = fdsSideA );
 	BYTE								GetSidesCount();
 };
@@ -234,8 +253,10 @@ class CFDSFile
 	BYTE								m_uSelectedDisk;
 	BOOL								m_fLoaded;
 	BOOL								m_fAloneDisk;
+	BOOL								m_isNES;
 
 	VOID								LoadNextDisk( CFDSStream & stream );
+	VOID								LoadNESDisk(CFDSStream& stream);
 
 public:
 	CFDSFile();
@@ -243,6 +264,7 @@ public:
 	DWORD					SaveFile();
 	DWORD					SaveFile( CString strFilename );
 	BOOL					IsFileLoaded() const;
+	BOOL					IsNES();
 	CString					Filename();
 
 	size_t					DiskCount();

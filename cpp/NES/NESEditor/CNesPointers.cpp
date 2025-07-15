@@ -36,8 +36,15 @@ VOID CNesPointers::LoadPointers()
 {
 	switch ( m_uVersion )
 	{
-		case ver_J: LoadPointersJ(); break;
-		default: throw std::exception( "Unknown version" ); break;
+		case ver_NES:
+			LoadPointersNES();
+			break;
+		case ver_J:
+			LoadPointersJ();
+			break;
+		default:
+			throw std::exception( "Unknown version" );
+			break;
 	}
 	LoadSharedPointers();
 }

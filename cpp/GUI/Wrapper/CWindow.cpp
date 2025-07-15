@@ -1785,7 +1785,7 @@ HINSTANCE CWindow::GetInstance()
 
 INT CWindow::MsgBox(LPCTSTR pszText, LPCTSTR pszCaption, UINT uType)
 {
-	static BOOL fIsWin6x = ( LOWORD(GetVersion()) >= 6 );
+	static BOOL fIsWin6x = (IsWindowsVistaOrGreater() );
 	static HRESULT (WINAPI * pTaskDialog)(HWND,HINSTANCE,PCWSTR,PCWSTR,PCWSTR,TASKDIALOG_COMMON_BUTTON_FLAGS,PCWSTR,int *)
 		=
 		(HRESULT (WINAPI * )(HWND,HINSTANCE,PCWSTR,PCWSTR,PCWSTR,TASKDIALOG_COMMON_BUTTON_FLAGS,PCWSTR,int *)) 

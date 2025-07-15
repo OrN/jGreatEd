@@ -35,6 +35,11 @@ VOID CFDSFile::LoadNextDisk( CFDSStream & stream )
 	m_vDisk[ fdsib.uDiskNumber ].LoadDiskSide( stream );
 }
 
+VOID CFDSFile::LoadNESDisk(CFDSStream& stream)
+{
+	m_vDisk[0].LoadNESDisk(stream);
+}
+
 DWORD CFDSFile::LoadFile( CString strFilename )
 {
 	CFDSStream stream;
@@ -44,11 +49,22 @@ DWORD CFDSFile::LoadFile( CString strFilename )
 		return ERROR_ALREADY_EXISTS;
 	}
 
+	m_isNES = false;
+
 	DWORD err = stream.OpenFile( strFilename, FDS_STREAM_READ );
 	if ( !err )
 	{
 		FDS_HEADER fdsh = stream.Read<FDS_HEADER>();
-		if ( FDS_FILE_SIGNATURE != fdsh.dwSignature )
+		if (NES_FILE_SIGNATURE == fdsh.dwSignature)
+		{
+			// Load NES file
+			m_isNES = TRUE;
+			LARGE_INTEGER li = { 0 };
+			stream.Seek(li, SEEK_SET);
+			LoadNESDisk(stream);
+			m_fAloneDisk = TRUE;
+		}
+		else if ( FDS_FILE_SIGNATURE != fdsh.dwSignature )
 		{
 			// just one disk
 			LARGE_INTEGER li = { 0 };
@@ -76,6 +92,11 @@ BOOL CFDSFile::IsFileLoaded() const
 	return m_fLoaded;
 }
 
+BOOL CFDSFile::IsNES()
+{
+	return m_isNES;
+}
+
 CString CFDSFile::Filename()
 {
 	return m_strFilename;
@@ -98,7 +119,12 @@ DWORD CFDSFile::SaveFile( CString strFilename )
 
 	if ( !err )
 	{
-		if ( m_fAloneDisk && 1 == DiskCount() )
+		if (m_isNES)
+		{
+			auto disk = m_vDisk.begin();
+			disk->second.DumpNES(stream);
+		}
+		else if ( m_fAloneDisk && 1 == DiskCount() )
 		{
 			auto disk = m_vDisk.begin();
 			disk->second.DumpDisk( stream );
