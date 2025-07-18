@@ -739,9 +739,9 @@ INT_PTR CMainWindow::Ctl_OnRightClick( PNCVNVIEW pncm )
 		AppendMenu( hMenu, MF_SEPARATOR, -1, nullptr );
 	}
 
-	// AppendMenu( hMenu, 0, 0x1005, TEXT( "Area properties..." ) );
-	InsertMenuItem( hMenu, 0x1005, FALSE, &mi );
-	// AppendMenu( hMenu, 0, 0x1105, TEXT( "Change area type..." ) );
+	InsertMenuItem(hMenu, 0x1005, FALSE, &mi);
+	// AppendMenu(hMenu, 0, ID_AREA_SETTINGS, TEXT("Area properties..."));
+	// AppendMenu(hMenu, 0, ID_AREA_TYPE, TEXT("Change area type..."));
 
 	AppendMenu( hMenu, MF_SEPARATOR, -1, nullptr );
 	AppendMenu( hMenu, ( pncm->pObject ? 0 : MFS_DISABLED | MFS_GRAYED ), ID_EDIT_COPY, TEXT( "Copy\tCtrl+C" ) );
@@ -750,22 +750,23 @@ INT_PTR CMainWindow::Ctl_OnRightClick( PNCVNVIEW pncm )
 	AppendMenu( hMenu, ( pncm->pObject ? 0 : MFS_DISABLED | MFS_GRAYED ), ID_EDIT_DELETEOBJECT, TEXT( "Delete object(s)...\tDel" ) );
 	AppendMenu( hMenu, 0, ID_EDIT_SELECTALL, TEXT( "Select all\tCtrl+A" ) );
 
-	switch ( menu.TrackMenu() )
+	UINT button = menu.TrackMenu();
+
+	switch ( button )
 	{
 		case 0x1001: InsertObject( pncm->pt ); break;
 		case 0x1002: DeleteObject(); break;
 		case 0x1003: ChangePointer( (CNesLevelItem*)pncm->pObject ); break;
 		case 0x1004: LoopSettings( (CNesLoopCommand*)pncm->pObject ); break;
-		case 0x1005: AreaSettings(); break;
 		case 0x1050: ChangeAreaPointer(); break;
 		case 0x1051: FollowTheAreaPointer(); break;
 		case 0x1101: IncreaseAreaSize( pncm->pt.x / 16 ); break;
 		case 0x1102: DecreaseAreaSize( pncm->pt.x / 16 ); break;
 		case 0x1103: ShowReferences( pncm->pt.x / 16 ); break;
-		case 0x1105: ChangeLevelType(); break;
 		case 0x1200: ModifyGround( pncm->pt.x, FALSE ); break;
 		case 0x1201: ModifyGround( pncm->pt.x, TRUE ); break;
 		case 0x1202: RemoveGround( pncm->pt.x ); break;
+		default: OnButton(button);
 	}
 
 	DestroyMenu( hSubMenu );
