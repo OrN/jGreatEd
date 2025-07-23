@@ -18,7 +18,13 @@
 VOID CMainWindow::DumpArea( LPCTSTR pszFile )
 {
 	std::vector<BYTE> bData, bLevel, bEnemy;
+	CNesLevelHeader header = m_cursel.pSublevel->Header();
+	NES_LEVEL_TYPE areaType = m_cursel.pSublevel->AreaType();
+
 	m_cursel.pSublevel->GetLevelBinaryData( bLevel, bEnemy );
+	bData.push_back( LOBYTE( header.GetRawHeader() ) );
+	bData.push_back( HIBYTE( header.GetRawHeader() ) );
+	bData.push_back( areaType );
 	bData.push_back( LOBYTE( bLevel.size() ) );
 	bData.push_back( LOBYTE( bEnemy.size() ) );
 	bData.insert( bData.end(), bLevel.begin(), bLevel.end() );
@@ -41,6 +47,9 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 {
 	std::vector<BYTE> bData, bLevel, bEnemy;
 	std::vector<NES_LINK> vLink;
+	CNesLevelHeader header;
+	NES_LEVEL_TYPE areaType;
+
 	HANDLE hFile = CreateFile( pszFile, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr );
 	if ( INVALID_HANDLE_VALUE != hFile )
 	{
@@ -53,12 +62,19 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 				bData.insert( bData.end(), li.QuadPart, 0 );
 				ReadFile( hFile, bData.data(), LODWORD( bData.size() ), &w, nullptr );
 
-				if ( bData.size() >= bData[ 0 ] + bData[ 1 ] )
+				size_t offset = 0;
+				header.SetRawHeader(bData[offset + 1] << 8 | bData[offset]);
+				offset += 2;
+				areaType = (NES_LEVEL_TYPE)bData[offset++];
+				size_t levelSize = bData[offset++];
+				size_t enemySize = bData[offset++];
+
+				if ( bData.size() >= levelSize + enemySize)
 				{
-					auto it = bData.begin() + 2;
-					bLevel.insert( bLevel.end(), it, it + bData[ 0 ] );
-					it += bData[ 0 ];
-					bEnemy.insert( bEnemy.end(), it, it + bData[ 1 ] );
+					auto it = bData.begin() + offset;
+					bLevel.insert( bLevel.end(), it, it + levelSize );
+					it += levelSize;
+					bEnemy.insert( bEnemy.end(), it, it + enemySize );
 
 					if ( bLevel.size() > 0 && bEnemy.size() > 0 )
 					{
@@ -70,6 +86,8 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 							{
 								TakeLevelSnapshot();
 								m_cursel.pSublevel->LoadLevelData( bLevel, bEnemy, vLink );
+								m_cursel.pSublevel->UpdateHeader(header);
+								m_cursel.pSublevel->UpdateAreaType(areaType);
 								m_cursel.pSublevel->InitObjects();
 								LoadSubLevel( m_cursel.bWorld, m_cursel.pSublevel );
 							}
