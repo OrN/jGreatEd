@@ -189,6 +189,7 @@ class CNESFile
 	CNESPPU					m_ppu;
 
 	VOID					MapRAM();
+	VOID					DebugRAM();
 	VOID					StoreRAM();
 
 public:

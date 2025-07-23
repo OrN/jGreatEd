@@ -33,6 +33,11 @@ BOOL CNESFile::LoadFile( LPCTSTR pszFile )
 	if ( !err )
 	{
 		MapRAM();
+
+#if _DEBUG
+		DebugRAM();
+#endif
+
 		return TRUE;
 	}
 
@@ -93,6 +98,22 @@ VOID CNESFile::MapRAM()
 			m_ram.MapFile( m_nrm.diskId, m_nrm.diskSide, file.uFileId, side.SelectFile( file.uFileId ) );
 		}
 	}
+}
+
+VOID CNESFile::DebugRAM()
+{
+	BYTE empty[0x6000];
+	for (size_t i = 0; i < 0x6000; i++)
+		empty[i] = 0x00;
+
+	FILE* f = fopen("ram.bin", "wb");
+	fwrite(empty, 1, 0x6000, f);
+	fwrite(m_ram.Data(), 1, 0xA000, f);
+	fclose(f);
+
+	f = fopen("ppu.bin", "wb");
+	fwrite(m_ppu.Data(), 1, 0x2000, f);
+	fclose(f);
 }
 
 VOID CNESFile::StoreRAM()

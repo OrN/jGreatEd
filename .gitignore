@@ -2,3 +2,5 @@
 /jGreatEd/
 /x64/
 /Win32/
+ram*.bin
+ppu*.bin
