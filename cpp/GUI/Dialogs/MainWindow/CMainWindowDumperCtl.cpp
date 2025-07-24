@@ -18,17 +18,32 @@
 VOID CMainWindow::DumpArea( LPCTSTR pszFile )
 {
 	std::vector<BYTE> bData, bLevel, bEnemy;
+	std::vector<NES_LOOP> vLoops;
 	CNesLevelHeader header = m_cursel.pSublevel->Header();
 	NES_LEVEL_TYPE areaType = m_cursel.pSublevel->AreaType();
 
 	m_cursel.pSublevel->GetLevelBinaryData( bLevel, bEnemy );
+	m_cursel.pSublevel->DumpLoops(vLoops);
+
 	bData.push_back( LOBYTE( header.GetRawHeader() ) );
 	bData.push_back( HIBYTE( header.GetRawHeader() ) );
 	bData.push_back( areaType );
 	bData.push_back( LOBYTE( bLevel.size() ) );
 	bData.push_back( LOBYTE( bEnemy.size() ) );
+	bData.push_back( LOBYTE( vLoops.size() ) );
 	bData.insert( bData.end(), bLevel.begin(), bLevel.end() );
 	bData.insert( bData.end(), bEnemy.begin(), bEnemy.end() );
+
+	// Dump Loops
+	for (size_t i = 0; i < vLoops.size(); i++)
+	{
+		NES_LOOP loop = vLoops[i];
+		bData.push_back(loop.aptr.bPtr);
+		bData.push_back(loop.bPageNumber);
+		bData.push_back(loop.bHeight);
+		bData.push_back(loop.bSlaveData);
+		bData.push_back(loop.bPageRewind);
+	}
 
 	HANDLE hFile = CreateFile( pszFile, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, 0, nullptr );
 	if ( INVALID_HANDLE_VALUE != hFile )
@@ -47,6 +62,7 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 {
 	std::vector<BYTE> bData, bLevel, bEnemy;
 	std::vector<NES_LINK> vLink;
+	std::vector<NES_LOOP> vLoops;
 	CNesLevelHeader header;
 	NES_LEVEL_TYPE areaType;
 
@@ -56,7 +72,7 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 		LARGE_INTEGER li = { 0 };
 		if ( GetFileSizeEx( hFile, &li ) )
 		{
-			if ( li.QuadPart > 2 && li.QuadPart < 0x210 )
+			if ( li.QuadPart > 6 && li.QuadPart < 0x250 )
 			{
 				DWORD w;
 				bData.insert( bData.end(), li.QuadPart, 0 );
@@ -68,6 +84,7 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 				areaType = (NES_LEVEL_TYPE)bData[offset++];
 				size_t levelSize = bData[offset++];
 				size_t enemySize = bData[offset++];
+				size_t loopSize = bData[offset++];
 
 				if ( bData.size() >= levelSize + enemySize)
 				{
@@ -75,6 +92,19 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 					bLevel.insert( bLevel.end(), it, it + levelSize );
 					it += levelSize;
 					bEnemy.insert( bEnemy.end(), it, it + enemySize );
+
+					// Load loops
+					size_t loopOffset = offset + levelSize + enemySize;
+					for (size_t i = 0; i < loopSize; i++)
+					{
+						NES_LOOP loop;
+						loop.aptr.bPtr = bData.data()[loopOffset++];
+						loop.bPageNumber = bData.data()[loopOffset++];
+						loop.bHeight = bData.data()[loopOffset++];
+						loop.bSlaveData = bData.data()[loopOffset++];
+						loop.bPageRewind = bData.data()[loopOffset++];
+						vLoops.push_back(loop);
+					}
 
 					if ( bLevel.size() > 0 && bEnemy.size() > 0 )
 					{
@@ -88,6 +118,7 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 								m_cursel.pSublevel->LoadLevelData( bLevel, bEnemy, vLink );
 								m_cursel.pSublevel->UpdateHeader(header);
 								m_cursel.pSublevel->UpdateAreaType(areaType);
+								m_cursel.pSublevel->LoadLoops(vLoops);
 								m_cursel.pSublevel->InitObjects();
 								LoadSubLevel( m_cursel.bWorld, m_cursel.pSublevel );
 							}

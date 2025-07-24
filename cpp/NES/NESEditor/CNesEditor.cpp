@@ -463,6 +463,7 @@ CNesLevel * CNesEditor::CreateLevel( BYTE bWorld, CNesLevel * pBasedLevel )
 {
 	CNesLevel * pNewLevel = CreateLevel( bWorld, pBasedLevel->AreaType(), pBasedLevel->IsSharedLevel(), ( 2 & pBasedLevel->GetLevelStatus() ) );
 	std::vector<NES_LINK> __unused;
+	std::vector<NES_LOOP> vLoops;
 	std::vector<BYTE> vAreaData, vEnemyData;
 	
 	if ( !pNewLevel )
@@ -471,11 +472,13 @@ CNesLevel * CNesEditor::CreateLevel( BYTE bWorld, CNesLevel * pBasedLevel )
 	}
 
 	pBasedLevel->GetLevelBinaryData( vAreaData, vEnemyData );
+	pBasedLevel->DumpLoops( vLoops );
 	if ( vAreaData.size() > 0 && vEnemyData.size() > 0 )
 	{
 		vAreaData.pop_back();
 		vEnemyData.pop_back();
 		pNewLevel->LoadLevelData( vAreaData, vEnemyData, __unused );
+		pNewLevel->LoadLoops(vLoops);
 	}
 
 	return pNewLevel;
