@@ -44,6 +44,16 @@ VOID CFDSDiskSide::LoadNESFiles(CFDSStream& stream)
 {
 	m_nesHeader = stream.Read<NES_HEADER>();
 
+	DWORD mapper = (m_nesHeader.FLAGS_7.HI_MAPPER << 4) | m_nesHeader.FLAGS_6.LO_MAPPER;
+
+	// Check mapper supported
+	if (mapper != 3) // Check if MMC3
+		throw std::exception("Only MMC3 version of the NES rom is supported");
+
+	// Check if NES 2.0
+	if (m_nesHeader.FLAGS_7.NES2 == 2)
+		throw std::exception("incompatible NES rom is using NES 2.0 format");
+
 	LARGE_INTEGER p15;
 	LARGE_INTEGER p16;
 	LARGE_INTEGER p32;
