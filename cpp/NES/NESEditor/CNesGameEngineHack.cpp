@@ -35,6 +35,7 @@ VOID CNesGameEngineHack::LoadData()
 	m_data.bowserHammers = m_file.Data< NES_BOWSER_HAMMERS_WORLD>( m_eptr[ eBowserHammersWorld ].ptr );
 
 	m_data.defaultEggBehavior = !IsSpinyEggPatched();
+	m_data.infiniteLives = IsInfiniteLivesPatched();
 }
 
 VOID CNesGameEngineHack::DumpData()
@@ -50,6 +51,7 @@ VOID CNesGameEngineHack::DumpData()
 	m_eptr.Select( eBowserHammersWorld );
 	m_file.Data< NES_BOWSER_HAMMERS_WORLD>( m_eptr[ eBowserHammersWorld ].ptr ) = m_data.bowserHammers;
 	SetSpinyEggPatch( !m_data.defaultEggBehavior );
+	SetInfiniteLivesPatch( m_data.infiniteLives );
 }
 
 BOOL CNesGameEngineHack::IsSpinyEggPatched()
@@ -58,6 +60,32 @@ BOOL CNesGameEngineHack::IsSpinyEggPatched()
 		0x20 == m_file.Data<BYTE>( m_eptr[ eSpinyEggPatchPlace ].ptr ) &&		// JSR SmallBBox on its own place at original
 		m_eptr[ eSmallBBox ].ptr == m_file.Data<USHORT>( m_eptr[ eSpinyEggPatchPlace ].ptr + 1 )
 		);
+}
+
+BOOL CNesGameEngineHack::IsInfiniteLivesPatched()
+{
+	return ( 0xEA == m_file.Data<BYTE>(m_eptr[eInfiniteLivesPatchPlace].ptr) );
+}
+
+VOID CNesGameEngineHack::SetInfiniteLivesPatch(BOOL fPatch)
+{
+	USHORT uPatchPtr = m_eptr[eInfiniteLivesPatchPlace].ptr;
+
+	if (fPatch)
+	{
+		m_file.Data<BYTE>(uPatchPtr++) = 0xEA; // NOP
+		m_file.Data<BYTE>(uPatchPtr++) = 0xEA; // NOP
+		m_file.Data<BYTE>(uPatchPtr++) = 0x4C; // JMP
+		m_file.Data<USHORT>(uPatchPtr) = 0x702B;
+	}
+	else
+	{
+		m_file.Data<BYTE>(uPatchPtr++) = 0xCE; // dec $75a
+		m_file.Data<USHORT>(uPatchPtr) = 0x075A;
+		uPatchPtr += 2;
+		m_file.Data<BYTE>(uPatchPtr++) = 0x10; // BPL
+		m_file.Data<BYTE>(uPatchPtr) = 0x0B;
+	}
 }
 
 VOID CNesGameEngineHack::SetSpinyEggPatch( BOOL fPatch )

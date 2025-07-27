@@ -39,6 +39,7 @@ typedef struct _tagNES_COIN_PAL_ROTATE_COLOR
 
 typedef BYTE NES_BOWSER_HAMMERS_WORLD;
 typedef BOOL NES_DEFAULT_SPINY_EGG_BEHAVIOR;
+typedef BOOL NES_INFINITE_LIVES;
 
 typedef struct _tagNES_TIMER_VALUES
 {
@@ -55,6 +56,7 @@ typedef struct _tagNES_ENGINE_HACK
 	NES_BOWSER_HAMMERS_WORLD		bowserHammers;
 	NES_TIMER_VALUES				timerValues;
 	NES_DEFAULT_SPINY_EGG_BEHAVIOR	defaultEggBehavior;
+	NES_INFINITE_LIVES				infiniteLives;
 } NES_ENGINE_HACK, *PNES_ENGINE_HACK;
 
 class CNesGameEngineHack
@@ -65,7 +67,9 @@ class CNesGameEngineHack
 	NES_ENGINE_HACK			m_data;
 
 	BOOL					IsSpinyEggPatched();
+	BOOL					IsInfiniteLivesPatched();
 	VOID					SetSpinyEggPatch( BOOL fPatch );
+	VOID					SetInfiniteLivesPatch( BOOL fPatch );
 
 public:
 	CNesGameEngineHack( CNESFile & file, CNesPointers & eptr );

@@ -151,6 +151,7 @@ VOID CNesPointers::LoadPointersJ()
 
 	m_eptr[ eSpinyEggPatchPlace ].eptr = NES_J_SPINY_EGG_PATCH_PLACE;
 	m_eptr[ eSmallBBox ].eptr = NES_J_SMALLBBOX;
+	m_eptr[ eInfiniteLivesPatchPlace ].eptr = NES_J_INFINITE_LIVES_PATCH_PLACE;
 
 	m_eptr[ eDemoActionArray ].eptr = NES_J_DEMO_ACTION_ARRAY;
 	m_eptr[ eDemoTimingArray ].eptr = NES_J_DEMO_TIMING_ARRAY;

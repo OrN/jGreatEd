@@ -40,7 +40,7 @@ VOID CEngineHackSheet::InitDialogs()
 	pushdlg( new CEngineHackHardLevel( GetInstance(), m_hack ) );
 	pushdlg( new CEngineBowserHammers( GetInstance(), m_hack ) );
 	pushdlg( new CEngineTimerValues( GetInstance(), m_hack ) );
-	pushdlg( new CEngineSpinyEggBehavior( GetInstance(), m_hack ) );
+	pushdlg( new CEngineHacks( GetInstance(), m_hack ) );
 }
 
 VOID CEngineHackSheet::FreeDialogs()
@@ -449,34 +449,48 @@ VOID CEngineTimerValues::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 	}
 }
 
-CEngineSpinyEggBehavior::CEngineSpinyEggBehavior( HINSTANCE hInstance, NES_ENGINE_HACK & hack )
+CEngineHacks::CEngineHacks( HINSTANCE hInstance, NES_ENGINE_HACK & hack )
 	: CEngineHackDlg( hInstance, TEXT( "Hacks" ), hack ),
-	m_stBehavior( hInstance, TEXT( "Spiny Egg falling behavior:" ), 20, 22, 120, 10 ),
-	m_cbBehavior( hInstance, 0x100, WC_COMBOBOX, nullptr, 150, 20, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL )
+	m_stSpinyEggBehavior( hInstance, TEXT( "Spiny Egg falling behavior:" ), 20, 22, 120, 10 ),
+	m_stInfiniteLives(hInstance, TEXT("Infinite lives:"), 20, 38, 120, 10),
+	m_cbSpinyEggBehavior( hInstance, 0x100, WC_COMBOBOX, nullptr, 150, 20, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL ),
+	m_cbInfiniteLives(hInstance, 0x101, WC_COMBOBOX, nullptr, 150, 38, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL)
 {
-	pushctl( m_stBehavior );
-	pushctl( m_cbBehavior );
+	pushctl(m_stSpinyEggBehavior);
+	pushctl(m_stInfiniteLives);
+	pushctl(m_cbSpinyEggBehavior);
+	pushctl(m_cbInfiniteLives);
 }
 
-BOOL CEngineSpinyEggBehavior::OnInit( LPARAM lParam )
+BOOL CEngineHacks::OnInit( LPARAM lParam )
 {
-	m_cbBehavior.cSendMessage( CB_ADDSTRING, 0, (LPARAM)TEXT( "Use default behavior" ) );
-	m_cbBehavior.cSendMessage( CB_ADDSTRING, 0, (LPARAM)TEXT( "Use alternate behavior" ) );
+	// Spiny Egg Behavior
+	m_cbSpinyEggBehavior.cSendMessage( CB_ADDSTRING, 0, (LPARAM)TEXT( "Use default behavior" ) );
+	m_cbSpinyEggBehavior.cSendMessage( CB_ADDSTRING, 0, (LPARAM)TEXT( "Use alternate behavior" ) );
 
-	m_cbBehavior.cSendMessage( CB_SETCURSEL, ( Hack().defaultEggBehavior ? 0 : 1 ) );
-	SetFocus( m_cbBehavior );
+	m_cbSpinyEggBehavior.cSendMessage( CB_SETCURSEL, ( Hack().defaultEggBehavior ? 0 : 1 ) );
+
+	// Infinite Lives
+	m_cbInfiniteLives.cSendMessage(CB_ADDSTRING, 0, (LPARAM)TEXT("Use default behavior"));
+	m_cbInfiniteLives.cSendMessage(CB_ADDSTRING, 0, (LPARAM)TEXT("Don't decrease lives"));
+
+	m_cbInfiniteLives.cSendMessage(CB_SETCURSEL, (Hack().infiniteLives ? 1 : 0));
+
+	// Default focus
+	SetFocus(m_cbSpinyEggBehavior);
 	
 	return FALSE;
 }
 
-BOOL CEngineSpinyEggBehavior::PSOnApply( BOOL fOkPressed )
+BOOL CEngineHacks::PSOnApply( BOOL fOkPressed )
 {
-	Hack().defaultEggBehavior = ( !m_cbBehavior.cSendMessage( CB_GETCURSEL ) );
+	Hack().defaultEggBehavior = ( !m_cbSpinyEggBehavior.cSendMessage( CB_GETCURSEL ) );
+	Hack().infiniteLives = (m_cbInfiniteLives.cSendMessage(CB_GETCURSEL));
 
 	return PSNRET_NOERROR;
 }
 
-VOID CEngineSpinyEggBehavior::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
+VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 {
 	if ( CBN_SELENDOK == uCmd )
 	{

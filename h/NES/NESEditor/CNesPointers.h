@@ -165,6 +165,7 @@ typedef enum _tagNES_EPOINTERS
 
 	eSpinyEggPatchPlace,
 	eSmallBBox,
+	eInfiniteLivesPatchPlace,
 
 	eDemoActionArray,
 	eDemoTimingArray,

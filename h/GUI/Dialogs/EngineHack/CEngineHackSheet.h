@@ -137,15 +137,17 @@ public:
 	CEngineTimerValues( HINSTANCE hInstance, NES_ENGINE_HACK & hack );
 };
 
-class CEngineSpinyEggBehavior: public CEngineHackDlg
+class CEngineHacks: public CEngineHackDlg
 {
-	CStaticControl			m_stBehavior;
-	CControl				m_cbBehavior;
+	CStaticControl			m_stSpinyEggBehavior;
+	CStaticControl			m_stInfiniteLives;
+	CControl				m_cbSpinyEggBehavior;
+	CControl				m_cbInfiniteLives;
 
 	BOOL					OnInit( LPARAM lParam ) override;
 	BOOL					PSOnApply( BOOL fOkPressed ) override;
 	VOID					OnCommand( USHORT uCmd, USHORT uId, HWND hCtl ) override;
 
 public:
-	CEngineSpinyEggBehavior( HINSTANCE hInstance, NES_ENGINE_HACK & hack );
+	CEngineHacks( HINSTANCE hInstance, NES_ENGINE_HACK & hack );
 };
