@@ -48,6 +48,13 @@ typedef enum _tagNES_EPOINTERS
 {
 	eFilesListPtrLo,
 	eFilesListPtrHi,
+
+	eStrTitleCopyright,
+	eStrTitleMarioGame,
+	eStrTitleLuigiGame,
+	eStrTitleTop,
+	eStrTitleTopEnding,
+
 	eEnemyPtr,
 	eEnemyPtrHi,
 	eLevelPtr,

@@ -41,6 +41,7 @@ VOID CEngineHackSheet::InitDialogs()
 	pushdlg( new CEngineBowserHammers( GetInstance(), m_hack ) );
 	pushdlg( new CEngineTimerValues( GetInstance(), m_hack ) );
 	pushdlg( new CEngineHacks( GetInstance(), m_hack ) );
+	pushdlg( new CEngineStrings( GetInstance(), m_hack ) );
 }
 
 VOID CEngineHackSheet::FreeDialogs()
@@ -449,6 +450,8 @@ VOID CEngineTimerValues::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 	}
 }
 
+///
+
 CEngineHacks::CEngineHacks( HINSTANCE hInstance, NES_ENGINE_HACK & hack )
 	: CEngineHackDlg( hInstance, TEXT( "Hacks" ), hack ),
 	m_stSpinyEggBehavior( hInstance, TEXT( "Spiny Egg falling behavior:" ), 20, 22, 120, 10 ),
@@ -493,6 +496,86 @@ BOOL CEngineHacks::PSOnApply( BOOL fOkPressed )
 VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 {
 	if ( CBN_SELENDOK == uCmd )
+	{
+		Changed();
+	}
+}
+
+///
+
+VOID CEngineStrings::AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index)
+{
+	UINT y = index * 16;
+	CStaticControl staticControl(hInstance, label, 20, 22 + y, 100, 10);
+	CEditControl editControl(hInstance, 0x100 + index, nullptr, 130, 22 + y, 80, 13);
+
+	m_stControl[ptr] = staticControl;
+	m_edControl[ptr] = editControl;
+
+	pushctl(m_stControl[ptr]);
+	pushctl(m_edControl[ptr]);
+}
+
+VOID CEngineStrings::GetString(NES_EPOINTERS ptr)
+{
+	m_edControl[ptr].Text(Hack().strings[ptr].GetBuffer());
+}
+
+VOID CEngineStrings::UpdateString(NES_EPOINTERS ptr)
+{
+	// Set string to user input
+	Hack().strings[ptr] = m_edControl[ptr].Text().c_str();
+
+	// TODO: REMOVE INVALID CHARACTERS FROM STRING
+
+	// Make string uppercase
+	Hack().strings[ptr].MakeUpper();
+
+	// Truncate string if it's too big
+	if (Hack().strings[ptr].GetLength() >= Hack().stringLengths[ptr])
+		Hack().strings[ptr].Truncate(Hack().stringLengths[ptr]);
+
+	// Reflect changes on the text box
+	GetString(ptr);
+}
+
+CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
+	: CEngineHackDlg(hInstance, TEXT("Strings"), hack)
+{
+	size_t index = 0;
+
+	AddString(hInstance, eStrTitleCopyright, _T("Title Copyright:"), index++);
+	AddString(hInstance, eStrTitleMarioGame, _T("Title Mario Game:"), index++);
+	AddString(hInstance, eStrTitleLuigiGame, _T("Title Luigi Game:"), index++);
+	AddString(hInstance, eStrTitleTop, _T("Title Top Score:"), index++);
+	AddString(hInstance, eStrTitleTopEnding, _T("Title Top Score Ending:"), index++);
+}
+
+BOOL CEngineStrings::OnInit(LPARAM lParam)
+{
+	GetString(eStrTitleCopyright);
+	GetString(eStrTitleMarioGame);
+	GetString(eStrTitleLuigiGame);
+	GetString(eStrTitleTop);
+	GetString(eStrTitleTopEnding);
+
+	return FALSE;
+}
+
+BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
+{
+	UpdateString(eStrTitleCopyright);
+	UpdateString(eStrTitleMarioGame);
+	UpdateString(eStrTitleLuigiGame);
+	UpdateString(eStrTitleTop);
+	UpdateString(eStrTitleTopEnding);
+
+	return PSNRET_NOERROR;
+}
+
+VOID CEngineStrings::OnCommand(USHORT uCmd, USHORT uId, HWND hCtl)
+{
+	if (EN_CHANGE == uCmd)
 	{
 		Changed();
 	}

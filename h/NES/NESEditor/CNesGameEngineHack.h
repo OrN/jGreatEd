@@ -49,14 +49,16 @@ typedef struct _tagNES_TIMER_VALUES
 
 typedef struct _tagNES_ENGINE_HACK
 {
-	NES_COINS_1UP_WORLD				coins;
-	NES_WARP_WORLD					warp;
-	NES_COIN_PAL_ROTATE_COLOR		rotateCols;
-	NES_HARD_MODE_LEVEL				hardMode;
-	NES_BOWSER_HAMMERS_WORLD		bowserHammers;
-	NES_TIMER_VALUES				timerValues;
-	NES_DEFAULT_SPINY_EGG_BEHAVIOR	defaultEggBehavior;
-	NES_INFINITE_LIVES				infiniteLives;
+	NES_COINS_1UP_WORLD					coins;
+	NES_WARP_WORLD						warp;
+	NES_COIN_PAL_ROTATE_COLOR			rotateCols;
+	NES_HARD_MODE_LEVEL					hardMode;
+	NES_BOWSER_HAMMERS_WORLD			bowserHammers;
+	NES_TIMER_VALUES					timerValues;
+	NES_DEFAULT_SPINY_EGG_BEHAVIOR		defaultEggBehavior;
+	NES_INFINITE_LIVES					infiniteLives;
+	std::map<NES_EPOINTERS, CString>	strings;
+	std::map<NES_EPOINTERS, size_t>		stringLengths;
 } NES_ENGINE_HACK, *PNES_ENGINE_HACK;
 
 class CNesGameEngineHack
@@ -70,6 +72,11 @@ class CNesGameEngineHack
 	BOOL					IsInfiniteLivesPatched();
 	VOID					SetSpinyEggPatch( BOOL fPatch );
 	VOID					SetInfiniteLivesPatch( BOOL fPatch );
+
+	VOID					LoadStrings();
+	VOID					DumpStrings();
+	VOID					DecodeString(NES_EPOINTERS ptr);
+	VOID					EncodeString(NES_EPOINTERS ptr);
 
 public:
 	CNesGameEngineHack( CNESFile & file, CNesPointers & eptr );

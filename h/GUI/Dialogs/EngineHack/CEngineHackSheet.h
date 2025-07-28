@@ -151,3 +151,20 @@ class CEngineHacks: public CEngineHackDlg
 public:
 	CEngineHacks( HINSTANCE hInstance, NES_ENGINE_HACK & hack );
 };
+
+class CEngineStrings : public CEngineHackDlg
+{
+	std::map<NES_EPOINTERS, CStaticControl>	m_stControl;
+	std::map<NES_EPOINTERS, CEditControl>	m_edControl;
+
+	VOID					AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index);
+	VOID					GetString(NES_EPOINTERS ptr);
+	VOID					UpdateString(NES_EPOINTERS ptr);
+
+	BOOL					OnInit(LPARAM lParam) override;
+	BOOL					PSOnApply(BOOL fOkPressed) override;
+	VOID					OnCommand(USHORT uCmd, USHORT uId, HWND hCtl) override;
+
+public:
+	CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack);
+};

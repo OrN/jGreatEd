@@ -26,6 +26,12 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eFilesListPtrLo ].eptr = NES_J_FILES_LIST_PTR_LO;
 	m_eptr[ eFilesListPtrHi ].eptr = NES_J_FILES_LIST_PTR_HI;
 
+	m_eptr[ eStrTitleCopyright ].eptr = NES_J_STR_TITLE_COPYRIGHT;
+	m_eptr[ eStrTitleMarioGame ].eptr = NES_J_STR_TITLE_MARIOGAME;
+	m_eptr[ eStrTitleLuigiGame ].eptr = NES_J_STR_TITLE_LUIGIGAME;
+	m_eptr[ eStrTitleTop ].eptr = NES_J_STR_TITLE_TOP;
+	m_eptr[ eStrTitleTopEnding ].eptr = NES_J_STR_TITLE_TOP_ENDING;
+
 	m_eptr[ eEnemyPtr ].eptr = NES_J_ENEMY_PTR;
 	m_eptr[ eEnemyPtrHi ].eptr = NES_J_ENEMY_PTR_HI;
 	m_eptr[ eLevelPtr ].eptr = NES_J_LEVEL_PTR;

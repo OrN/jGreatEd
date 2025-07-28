@@ -15,10 +15,110 @@
 
 #include "h\NES\NESEditor\NESEditor.h"
 
+static const wchar_t DECODE_STR_ALPHANUMERIC[] =
+{
+	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+	'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+	'U', 'V', 'W', 'X', 'Y', 'Z', ' ',
+};
+
 CNesGameEngineHack::CNesGameEngineHack( CNESFile & file, CNesPointers & eptr )
 	: m_file( file ), m_eptr( eptr )
 {
 
+}
+
+VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr)
+{
+	CString str;
+	USHORT uPatchPtr = m_eptr[ptr].ptr;
+	size_t length = m_file.Data<BYTE>(uPatchPtr++);
+
+	for (size_t i = 0; i < length; i++)
+	{
+		BYTE data = m_file.Data<BYTE>(uPatchPtr + i);
+		wchar_t character = ' ';
+
+		if (data < 0x25) // Alphanumeric
+			character = DECODE_STR_ALPHANUMERIC[data];
+		else if (data == 0x28) // -
+			character = '-';
+		else if (data == 0xCF) // Copyright
+			character = L'\u00A9';
+		else
+			printf("Unknown character: 0x%02x found in NES string!\n", data);
+
+		str.AppendChar(character);
+	}
+
+	m_data.strings[ptr] = str.Trim();
+	m_data.stringLengths[ptr] = length;
+}
+
+VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr)
+{
+	CString str = m_data.strings[ptr];
+	USHORT uPatchPtr = m_eptr[ptr].ptr;
+	size_t length = m_data.stringLengths[ptr];
+
+	uPatchPtr += 1; // Skip Length, we can't change it right now
+
+	for (size_t i = 0; i < length; i++)
+	{
+		BYTE data = 0x24; // Space
+		wchar_t character = ' ';
+
+		if (i < str.GetLength())
+			character = str.GetAt(i);
+
+		if (character == 0x2D) // -
+		{
+			data = 0x28;
+		}
+		else if (character >= 0x30 && character <= 0x39) // Number
+		{
+			data = character - 0x30;
+		}
+		else if (character >= 0x41 && character <= 0x5A) // Letter
+		{
+			data = (character - 0x41) + 0x0A;
+		}
+		else if (character == 0x20) // Space
+		{
+			data = 0x24;
+		}
+		else if (character == L'\u00A9') // Copyright
+		{
+			data = 0xCF;
+		}
+		else
+		{
+			printf("Unknown character: 0x%02x encoding NES string!\n", character);
+		}
+
+		// printf("Encoded: %lc, 0x%02x\n", character, data);
+
+		m_file.Data<BYTE>(uPatchPtr + i) = data;
+	}
+}
+
+VOID CNesGameEngineHack::LoadStrings()
+{
+	DecodeString(eStrTitleCopyright);
+	DecodeString(eStrTitleMarioGame);
+	DecodeString(eStrTitleLuigiGame);
+	DecodeString(eStrTitleTop);
+	DecodeString(eStrTitleTopEnding);
+}
+
+VOID CNesGameEngineHack::DumpStrings()
+{
+	EncodeString(eStrTitleCopyright);
+	EncodeString(eStrTitleMarioGame);
+	EncodeString(eStrTitleLuigiGame);
+	EncodeString(eStrTitleTop);
+	EncodeString(eStrTitleTopEnding);
 }
 
 VOID CNesGameEngineHack::LoadData()
@@ -36,6 +136,8 @@ VOID CNesGameEngineHack::LoadData()
 
 	m_data.defaultEggBehavior = !IsSpinyEggPatched();
 	m_data.infiniteLives = IsInfiniteLivesPatched();
+
+	LoadStrings();
 }
 
 VOID CNesGameEngineHack::DumpData()
@@ -52,6 +154,8 @@ VOID CNesGameEngineHack::DumpData()
 	m_file.Data< NES_BOWSER_HAMMERS_WORLD>( m_eptr[ eBowserHammersWorld ].ptr ) = m_data.bowserHammers;
 	SetSpinyEggPatch( !m_data.defaultEggBehavior );
 	SetInfiniteLivesPatch( m_data.infiniteLives );
+
+	DumpStrings();
 }
 
 BOOL CNesGameEngineHack::IsSpinyEggPatched()
