@@ -35,6 +35,9 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrTitleTop ].eptr = NES_J_STR_TITLE_TOP;
 	m_eptr[ eStrTitleTopEnding ].eptr = NES_J_STR_TITLE_TOP_ENDING;
 
+	m_eptr[ eStrUIMario ].eptr = NES_J_STR_UI_MARIO;
+	m_eptr[ eStrUILuigi ].eptr = NES_J_STR_UI_LUIGI;
+
 	m_eptr[ eStrHurrahMessage ].eptr = NES_J_STR_HURRAH_MESSAGE;
 	m_eptr[ eStrThankYouMessage ].eptr = NES_J_STR_THANKYOU_MESSAGE;
 	m_eptr[ eStrThankYouMarioMessage ].eptr = NES_J_STR_THANKYOUMARIO_MESSAGE;

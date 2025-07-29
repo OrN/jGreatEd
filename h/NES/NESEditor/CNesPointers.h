@@ -55,6 +55,9 @@ typedef enum _tagNES_EPOINTERS
 	eStrTitleTop,
 	eStrTitleTopEnding,
 
+	eStrUIMario,
+	eStrUILuigi,
+
 	eStrHurrahMessage,
 	eStrThankYouMessage,
 	eStrThankYouMarioMessage,

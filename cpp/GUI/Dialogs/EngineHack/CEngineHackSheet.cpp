@@ -550,6 +550,9 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrTitleTop, _T("Title Top Score:"), index++);
 	AddString(hInstance, eStrTitleTopEnding, _T("Title Top Score Ending:"), index++);
 
+	AddString(hInstance, eStrUIMario, _T("UI Mario:"), index++);
+	AddString(hInstance, eStrUILuigi, _T("UI Luigi:"), index++);
+
 	AddString(hInstance, eStrHurrahMessage, _T("Hurrah Message:"), index++);
 	AddString(hInstance, eStrThankYouMessage, _T("Thank You Message:"), index++);
 	AddString(hInstance, eStrThankYouMarioMessage, _T("Thank You Mario Message:"), index++);
@@ -565,6 +568,9 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrTitleLuigiGame);
 	GetString(eStrTitleTop);
 	GetString(eStrTitleTopEnding);
+
+	GetString(eStrUIMario);
+	GetString(eStrUILuigi);
 
 	GetString(eStrHurrahMessage);
 	GetString(eStrThankYouMessage);
@@ -583,6 +589,9 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrTitleLuigiGame);
 	UpdateString(eStrTitleTop);
 	UpdateString(eStrTitleTopEnding);
+
+	UpdateString(eStrUIMario);
+	UpdateString(eStrUILuigi);
 
 	UpdateString(eStrHurrahMessage);
 	UpdateString(eStrThankYouMessage);

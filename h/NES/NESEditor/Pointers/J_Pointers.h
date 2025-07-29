@@ -26,7 +26,9 @@
 #define			NES_J_STR_TITLE_TOP				0x00FFC75E
 #define			NES_J_STR_TITLE_TOP_ENDING		0x00FFC765
 
-// TODO: Check these pointers on FDS after fixing mapping issues
+#define			NES_J_STR_UI_MARIO				0x00FFC5EB
+#define			NES_J_STR_UI_LUIGI				0x00FFC5F0
+
 #define			NES_J_STR_HURRAH_MESSAGE			0x00FFC8D9
 #define			NES_J_STR_THANKYOU_MESSAGE			0x00FFC895
 #define			NES_J_STR_THANKYOUMARIO_MESSAGE		0x00FFC84E

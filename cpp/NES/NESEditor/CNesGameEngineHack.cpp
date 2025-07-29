@@ -117,7 +117,7 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 			printf("Unknown character: 0x%02x encoding NES string!\n", character);
 		}
 
-		// printf("Encoded: %lc, 0x%02x\n", character, data);
+		printf("Encoded: %lc, 0x%02x\n", character, data);
 
 		m_file.Data<BYTE>(uPatchPtr + i) = data;
 	}
@@ -133,6 +133,10 @@ VOID CNesGameEngineHack::LoadStrings()
 	DecodeString(eStrTitleLuigiGame);
 	DecodeString(eStrTitleTop);
 	DecodeString(eStrTitleTopEnding);
+
+	DecodeString(eStrUIMario, 5);
+	DecodeString(eStrUILuigi, 5);
+
 	DecodeString(eStrOurPrincessMessage);
 	DecodeString(eStrAnotherCastleMessage);
 
@@ -155,6 +159,10 @@ VOID CNesGameEngineHack::DumpStrings()
 	EncodeString(eStrTitleLuigiGame);
 	EncodeString(eStrTitleTop);
 	EncodeString(eStrTitleTopEnding);
+
+	EncodeString(eStrUIMario, 5);
+	EncodeString(eStrUILuigi, 5);
+
 	EncodeString(eStrOurPrincessMessage);
 	EncodeString(eStrAnotherCastleMessage);
 	m_file.StoreSnapshot();
