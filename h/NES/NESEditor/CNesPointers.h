@@ -62,6 +62,10 @@ typedef enum _tagNES_EPOINTERS
 
 	eStrLevelWorld,
 
+	eStrGameOver,
+	eStrGameOverContinue,
+	eStrGameOverRetry,
+
 	eStrHurrahMessage,
 	eStrThankYouMessage,
 	eStrThankYouMarioMessage,

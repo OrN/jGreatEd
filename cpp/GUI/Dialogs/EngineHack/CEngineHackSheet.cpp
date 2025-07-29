@@ -92,7 +92,7 @@ INT_PTR CEngineHackSheet::Show( CWindow * pParent )
 // base class
 
 CEngineHackDlg::CEngineHackDlg( HINSTANCE hInstance, LPCTSTR pszTitle, NES_ENGINE_HACK & hack )
-	: CDialog( hInstance, 300, 250, pszTitle ), m_hack( hack ),
+	: CDialog( hInstance, 432, 250, pszTitle ), m_hack( hack ),
 	m_ctlFrame( hInstance, -1, WC_BUTTON, pszTitle, 7, 7, -7, -7, WS_VISIBLE | BS_GROUPBOX )
 {
 	pushctl( m_ctlFrame );
@@ -505,9 +505,11 @@ VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 
 VOID CEngineStrings::AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index)
 {
-	UINT y = index * 16;
-	CStaticControl staticControl(hInstance, label, 20, 24 + y, 100, 10);
-	CEditControl editControl(hInstance, 0x100 + index, nullptr, 130, 22 + y, 80, 13);
+
+	UINT x = (index / 14) * 212;
+	UINT y = (index % 14) * 16;
+	CStaticControl staticControl(hInstance, label, 8 + x, 19 + y, 100, 10);
+	CEditControl editControl(hInstance, 0x100 + index, nullptr, 116 + x, 17 + y, 80, 13);
 
 	m_stControl[ptr] = staticControl;
 	m_edControl[ptr] = editControl;
@@ -557,6 +559,10 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 
 	AddString(hInstance, eStrLevelWorld, _T("Level World:"), index++);
 
+	AddString(hInstance, eStrGameOver, _T("Game Over:"), index++);
+	AddString(hInstance, eStrGameOverContinue, _T("Game Over Continue:"), index++);
+	AddString(hInstance, eStrGameOverRetry, _T("Game Over Retry:"), index++);
+
 	AddString(hInstance, eStrHurrahMessage, _T("Hurrah Message:"), index++);
 	AddString(hInstance, eStrThankYouMessage, _T("Thank You Message:"), index++);
 	AddString(hInstance, eStrThankYouMarioMessage, _T("Thank You Mario Message:"), index++);
@@ -579,6 +585,10 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrUITime);
 
 	GetString(eStrLevelWorld);
+
+	GetString(eStrGameOver);
+	GetString(eStrGameOverContinue);
+	GetString(eStrGameOverRetry);
 
 	GetString(eStrHurrahMessage);
 	GetString(eStrThankYouMessage);
@@ -604,6 +614,10 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrUITime);
 
 	UpdateString(eStrLevelWorld);
+
+	UpdateString(eStrGameOver);
+	UpdateString(eStrGameOverContinue);
+	UpdateString(eStrGameOverRetry);
 
 	UpdateString(eStrHurrahMessage);
 	UpdateString(eStrThankYouMessage);

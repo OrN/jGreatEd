@@ -42,6 +42,10 @@ VOID CNesPointers::LoadPointersJ()
 
 	m_eptr[ eStrLevelWorld ].eptr = NES_J_STR_LEVEL_WORLD;
 
+	m_eptr[ eStrGameOver ].eptr = NES_J_STR_GAMEOVER;
+	m_eptr[ eStrGameOverContinue ].eptr = NES_J_STR_GAMEOVER_CONTINUE;
+	m_eptr[ eStrGameOverRetry ].eptr = NES_J_STR_GAMEOVER_RETRY;
+
 	m_eptr[ eStrHurrahMessage ].eptr = NES_J_STR_HURRAH_MESSAGE;
 	m_eptr[ eStrThankYouMessage ].eptr = NES_J_STR_THANKYOU_MESSAGE;
 	m_eptr[ eStrThankYouMarioMessage ].eptr = NES_J_STR_THANKYOUMARIO_MESSAGE;

@@ -141,6 +141,10 @@ VOID CNesGameEngineHack::LoadStrings()
 
 	DecodeString(eStrLevelWorld, 5);
 
+	DecodeString(eStrGameOver);
+	DecodeString(eStrGameOverContinue);
+	DecodeString(eStrGameOverRetry);
+
 	DecodeString(eStrOurPrincessMessage);
 	DecodeString(eStrAnotherCastleMessage);
 
@@ -170,6 +174,10 @@ VOID CNesGameEngineHack::DumpStrings()
 	EncodeString(eStrUITime, 4);
 
 	EncodeString(eStrLevelWorld, 5);
+
+	EncodeString(eStrGameOver);
+	EncodeString(eStrGameOverContinue);
+	EncodeString(eStrGameOverRetry);
 
 	EncodeString(eStrOurPrincessMessage);
 	EncodeString(eStrAnotherCastleMessage);
