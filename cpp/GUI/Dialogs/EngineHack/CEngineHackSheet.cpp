@@ -455,7 +455,7 @@ VOID CEngineTimerValues::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 CEngineHacks::CEngineHacks( HINSTANCE hInstance, NES_ENGINE_HACK & hack )
 	: CEngineHackDlg( hInstance, TEXT( "Hacks" ), hack ),
 	m_stSpinyEggBehavior( hInstance, TEXT( "Spiny Egg falling behavior:" ), 20, 22, 120, 10 ),
-	m_stInfiniteLives(hInstance, TEXT("Infinite lives:"), 20, 38, 120, 10),
+	m_stInfiniteLives(hInstance, TEXT("Infinite lives:"), 20, 40, 120, 10),
 	m_cbSpinyEggBehavior( hInstance, 0x100, WC_COMBOBOX, nullptr, 150, 20, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL ),
 	m_cbInfiniteLives(hInstance, 0x101, WC_COMBOBOX, nullptr, 150, 38, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL)
 {
@@ -506,7 +506,7 @@ VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 VOID CEngineStrings::AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index)
 {
 	UINT y = index * 16;
-	CStaticControl staticControl(hInstance, label, 20, 22 + y, 100, 10);
+	CStaticControl staticControl(hInstance, label, 20, 24 + y, 100, 10);
 	CEditControl editControl(hInstance, 0x100 + index, nullptr, 130, 22 + y, 80, 13);
 
 	m_stControl[ptr] = staticControl;
@@ -552,6 +552,8 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 
 	AddString(hInstance, eStrHurrahMessage, _T("Hurrah Message:"), index++);
 	AddString(hInstance, eStrThankYouMessage, _T("Thank You Message:"), index++);
+	AddString(hInstance, eStrThankYouMarioMessage, _T("Thank You Mario Message:"), index++);
+	AddString(hInstance, eStrThankYouLuigiMessage, _T("Thank You Luigi Message:"), index++);
 	AddString(hInstance, eStrOurPrincessMessage, _T("Our Princess Message:"), index++);
 	AddString(hInstance, eStrAnotherCastleMessage, _T("Another Castle Message:"), index++);
 }
@@ -566,6 +568,8 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 
 	GetString(eStrHurrahMessage);
 	GetString(eStrThankYouMessage);
+	GetString(eStrThankYouMarioMessage);
+	GetString(eStrThankYouLuigiMessage);
 	GetString(eStrOurPrincessMessage);
 	GetString(eStrAnotherCastleMessage);
 
@@ -582,6 +586,8 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 
 	UpdateString(eStrHurrahMessage);
 	UpdateString(eStrThankYouMessage);
+	UpdateString(eStrThankYouMarioMessage);
+	UpdateString(eStrThankYouLuigiMessage);
 	UpdateString(eStrOurPrincessMessage);
 	UpdateString(eStrAnotherCastleMessage);
 

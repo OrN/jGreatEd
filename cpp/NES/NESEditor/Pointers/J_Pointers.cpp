@@ -37,6 +37,8 @@ VOID CNesPointers::LoadPointersJ()
 
 	m_eptr[ eStrHurrahMessage ].eptr = NES_J_STR_HURRAH_MESSAGE;
 	m_eptr[ eStrThankYouMessage ].eptr = NES_J_STR_THANKYOU_MESSAGE;
+	m_eptr[ eStrThankYouMarioMessage ].eptr = NES_J_STR_THANKYOUMARIO_MESSAGE;
+	m_eptr[ eStrThankYouLuigiMessage ].eptr = NES_J_STR_THANKYOULUIGI_MESSAGE;
 	m_eptr[ eStrOurPrincessMessage ].eptr = NES_J_STR_OURPRINCESS_MESSAGE;
 	m_eptr[ eStrAnotherCastleMessage ].eptr = NES_J_STR_ANOTHERCASTLE_MESSAGE;
 

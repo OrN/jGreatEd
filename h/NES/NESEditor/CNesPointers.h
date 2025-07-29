@@ -57,6 +57,8 @@ typedef enum _tagNES_EPOINTERS
 
 	eStrHurrahMessage,
 	eStrThankYouMessage,
+	eStrThankYouMarioMessage,
+	eStrThankYouLuigiMessage,
 	eStrOurPrincessMessage,
 	eStrAnotherCastleMessage,
 

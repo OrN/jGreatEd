@@ -31,9 +31,17 @@ CNesGameEngineHack::CNesGameEngineHack( CNESFile & file, CNesPointers & eptr )
 
 VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr)
 {
-	CString str;
+	DecodeString(ptr, 0);
+}
+
+VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr, size_t length)
+{
 	USHORT uPatchPtr = m_eptr[ptr].ptr;
-	size_t length = m_file.Data<BYTE>(uPatchPtr++);
+
+	if (length == 0)
+		length = m_file.Data<BYTE>(uPatchPtr++);
+
+	CString str;
 
 	for (size_t i = 0; i < length; i++)
 	{
@@ -60,11 +68,17 @@ VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr)
 
 VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr)
 {
-	CString str = m_data.strings[ptr];
-	USHORT uPatchPtr = m_eptr[ptr].ptr;
-	size_t length = m_data.stringLengths[ptr];
+	EncodeString(ptr, 0);
+}
 
-	uPatchPtr += 1; // Skip Length, we can't change it right now
+VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
+{
+	USHORT uPatchPtr = m_eptr[ptr].ptr;
+
+	if (length == 0)
+		length = m_file.Data<BYTE>(uPatchPtr++);
+
+	CString str = m_data.strings[ptr];
 
 	for (size_t i = 0; i < length; i++)
 	{
@@ -125,6 +139,8 @@ VOID CNesGameEngineHack::LoadStrings()
 	m_file.SelectFile(48);
 	DecodeString(eStrHurrahMessage);
 	DecodeString(eStrThankYouMessage);
+	DecodeString(eStrThankYouMarioMessage, 5);
+	DecodeString(eStrThankYouLuigiMessage, 5);
 
 	m_file.EndSnapshot();
 }
@@ -146,6 +162,8 @@ VOID CNesGameEngineHack::DumpStrings()
 	m_file.SelectFile(48);
 	EncodeString(eStrHurrahMessage);
 	EncodeString(eStrThankYouMessage);
+	EncodeString(eStrThankYouMarioMessage, 5);
+	EncodeString(eStrThankYouLuigiMessage, 5);
 	m_file.StoreSnapshot();
 
 	m_file.EndSnapshot();
