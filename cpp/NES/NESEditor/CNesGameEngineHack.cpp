@@ -136,6 +136,10 @@ VOID CNesGameEngineHack::LoadStrings()
 
 	DecodeString(eStrUIMario, 5);
 	DecodeString(eStrUILuigi, 5);
+	DecodeString(eStrUIWorld, 5);
+	DecodeString(eStrUITime, 4);
+
+	DecodeString(eStrLevelWorld, 5);
 
 	DecodeString(eStrOurPrincessMessage);
 	DecodeString(eStrAnotherCastleMessage);
@@ -162,6 +166,10 @@ VOID CNesGameEngineHack::DumpStrings()
 
 	EncodeString(eStrUIMario, 5);
 	EncodeString(eStrUILuigi, 5);
+	EncodeString(eStrUIWorld, 5);
+	EncodeString(eStrUITime, 4);
+
+	EncodeString(eStrLevelWorld, 5);
 
 	EncodeString(eStrOurPrincessMessage);
 	EncodeString(eStrAnotherCastleMessage);

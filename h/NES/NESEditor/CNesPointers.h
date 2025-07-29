@@ -57,6 +57,10 @@ typedef enum _tagNES_EPOINTERS
 
 	eStrUIMario,
 	eStrUILuigi,
+	eStrUIWorld,
+	eStrUITime,
+
+	eStrLevelWorld,
 
 	eStrHurrahMessage,
 	eStrThankYouMessage,
