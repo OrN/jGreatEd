@@ -19,6 +19,9 @@ VOID CNesPointers::LoadPointersNES()
 {
 	m_eptr[eVRAMAddrTableHi].eptr = NES_J_VRAM_NES_TBL_PTR_HI;
 	m_eptr[eVRAMAddrTableLo].eptr = NES_J_VRAM_NES_TBL_PTR_LO;
+
+	m_eptr[eStrHurrahMessage].eptr = NES_J_STR_NES_HURRAH_MESSAGE;
+	m_eptr[eStrThankYouMessage].eptr = NES_J_STR_NES_THANKYOU_MESSAGE;
 }
 
 VOID CNesPointers::LoadPointersJ()
@@ -31,6 +34,11 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrTitleLuigiGame ].eptr = NES_J_STR_TITLE_LUIGIGAME;
 	m_eptr[ eStrTitleTop ].eptr = NES_J_STR_TITLE_TOP;
 	m_eptr[ eStrTitleTopEnding ].eptr = NES_J_STR_TITLE_TOP_ENDING;
+
+	m_eptr[ eStrHurrahMessage ].eptr = NES_J_STR_HURRAH_MESSAGE;
+	m_eptr[ eStrThankYouMessage ].eptr = NES_J_STR_THANKYOU_MESSAGE;
+	m_eptr[ eStrOurPrincessMessage ].eptr = NES_J_STR_OURPRINCESS_MESSAGE;
+	m_eptr[ eStrAnotherCastleMessage ].eptr = NES_J_STR_ANOTHERCASTLE_MESSAGE;
 
 	m_eptr[ eEnemyPtr ].eptr = NES_J_ENEMY_PTR;
 	m_eptr[ eEnemyPtrHi ].eptr = NES_J_ENEMY_PTR_HI;

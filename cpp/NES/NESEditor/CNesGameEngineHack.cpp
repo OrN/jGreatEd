@@ -44,6 +44,8 @@ VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr)
 			character = DECODE_STR_ALPHANUMERIC[data];
 		else if (data == 0x28) // -
 			character = '-';
+		else if (data == 0x2B) // !
+			character = '!';
 		else if (data == 0xCF) // Copyright
 			character = L'\u00A9';
 		else
@@ -72,7 +74,11 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr)
 		if (i < str.GetLength())
 			character = str.GetAt(i);
 
-		if (character == 0x2D) // -
+		if (character == 0x21) // !
+		{
+			data = 0x2B;
+		}
+		else if (character == 0x2D) // -
 		{
 			data = 0x28;
 		}
@@ -105,20 +111,44 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr)
 
 VOID CNesGameEngineHack::LoadStrings()
 {
+	m_file.BeginSnapshot();
+
+	m_file.SelectFile(5);
 	DecodeString(eStrTitleCopyright);
 	DecodeString(eStrTitleMarioGame);
 	DecodeString(eStrTitleLuigiGame);
 	DecodeString(eStrTitleTop);
 	DecodeString(eStrTitleTopEnding);
+	DecodeString(eStrOurPrincessMessage);
+	DecodeString(eStrAnotherCastleMessage);
+
+	m_file.SelectFile(48);
+	DecodeString(eStrHurrahMessage);
+	DecodeString(eStrThankYouMessage);
+
+	m_file.EndSnapshot();
 }
 
 VOID CNesGameEngineHack::DumpStrings()
 {
+	m_file.BeginSnapshot();
+
+	m_file.SelectFile(5);
 	EncodeString(eStrTitleCopyright);
 	EncodeString(eStrTitleMarioGame);
 	EncodeString(eStrTitleLuigiGame);
 	EncodeString(eStrTitleTop);
 	EncodeString(eStrTitleTopEnding);
+	EncodeString(eStrOurPrincessMessage);
+	EncodeString(eStrAnotherCastleMessage);
+	m_file.StoreSnapshot();
+
+	m_file.SelectFile(48);
+	EncodeString(eStrHurrahMessage);
+	EncodeString(eStrThankYouMessage);
+	m_file.StoreSnapshot();
+
+	m_file.EndSnapshot();
 }
 
 VOID CNesGameEngineHack::LoadData()

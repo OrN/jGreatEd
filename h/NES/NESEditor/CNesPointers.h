@@ -55,6 +55,11 @@ typedef enum _tagNES_EPOINTERS
 	eStrTitleTop,
 	eStrTitleTopEnding,
 
+	eStrHurrahMessage,
+	eStrThankYouMessage,
+	eStrOurPrincessMessage,
+	eStrAnotherCastleMessage,
+
 	eEnemyPtr,
 	eEnemyPtrHi,
 	eLevelPtr,

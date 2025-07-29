@@ -21,6 +21,24 @@ CNESFile::CNESFile()
 
 }
 
+VOID CNESFile::BeginSnapshot()
+{
+	m_ram.BeginSnapshot();
+	m_ppu.BeginSnapshot();
+}
+
+VOID CNESFile::StoreSnapshot()
+{
+	m_ram.StoreFiles();
+	m_ppu.StoreFiles();
+}
+
+VOID CNESFile::EndSnapshot()
+{
+	m_ram.EndSnapshot();
+	m_ppu.EndSnapshot();
+}
+
 BOOL CNESFile::LoadFile( LPCTSTR pszFile )
 {
 	if ( m_file.IsFileLoaded() )

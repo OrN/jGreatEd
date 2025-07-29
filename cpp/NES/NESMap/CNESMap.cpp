@@ -26,6 +26,35 @@ VOID CNESMap::FileMapped( CFDSDiskFile & file, const NES_RAM_MAP & fileId )
 	// do nothing. Callback for derived class
 }
 
+VOID CNESMap::BeginSnapshot()
+{
+	m_snapshot.clear();
+	for (auto mapping : m_vMAP)
+	{
+		if (mapping.bEmptyFlag || m_snapshot.count(mapping.fileId))
+			continue;
+
+		m_snapshot[mapping.fileId] = mapping;
+	}
+
+	StoreFiles();
+}
+
+VOID CNESMap::EndSnapshot()
+{
+	if (m_snapshot.size() == 0)
+		return;
+
+	StoreFiles();
+
+	for (auto mapping : m_snapshot)
+	{
+		NES_RAM_MAP& nrm = mapping.second;
+		CFDSDiskFile& file = m_file.SelectDisk(nrm.diskId).SelectSide(nrm.diskSide).SelectFile(nrm.fileId);
+		MapFile(nrm.diskId, nrm.diskSide, nrm.fileId, file);
+	}
+}
+
 NES_RAM_MAP CNESMap::UpdateAddr( USHORT & ptr, USHORT & uFilePtr, CFDSDiskFile & fileTarget, CFDSDiskFile & fileSource, const NES_RAM_MAP & nrmNew )
 {
 	size_t uSize = m_vMAP.size(), uFileSize = fileTarget.GetFileData().uFileSize, uFileSourceSize = fileSource.GetFileData().uFileSize;

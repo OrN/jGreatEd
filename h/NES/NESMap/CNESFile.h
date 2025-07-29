@@ -46,8 +46,10 @@ typedef union _tagNES_RAM_MAP
 		BYTE			diskId;
 		FDS_DISK_SIDE	diskSide;
 		BYTE			fileId;
+
 	};
 
+	_tagNES_RAM_MAP() {}
 	_tagNES_RAM_MAP( DWORD init ) : id( init ) {};
 } NES_RAM_MAP, *PNES_RAM_MAP;
 
@@ -135,6 +137,7 @@ public:
 class CNESMap
 {
 	CFDSFile						&	m_file;
+	std::map<BYTE, NES_RAM_MAP>			m_snapshot;
 
 	NES_RAM_MAP							UpdateAddr( USHORT & ptr, USHORT & uFilePtr, CFDSDiskFile & fileTarget, CFDSDiskFile & fileSource, const NES_RAM_MAP & nrmNew );
 	NES_RAM_MAP							UpdateAddr( USHORT & ptr, USHORT & uFilePtr, CFDSDiskFile & fileTarget, const NES_RAM_MAP & nrmNew );
@@ -154,6 +157,9 @@ public:
 	VOID StoreFiles();
 	PBYTE			Data();
 	VOID			clear();
+
+	VOID BeginSnapshot();
+	VOID EndSnapshot();
 };
 
 class CNESPPU: public CNESMap
@@ -194,6 +200,10 @@ class CNESFile
 
 public:
 	CNESFile();
+
+	VOID BeginSnapshot();
+	VOID StoreSnapshot();
+	VOID EndSnapshot();
 
 	BOOL					LoadFile( LPCTSTR pszFile );
 	BOOL					SaveFile( LPCTSTR pszFile );

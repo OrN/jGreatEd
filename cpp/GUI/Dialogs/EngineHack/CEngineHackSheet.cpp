@@ -549,6 +549,11 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrTitleLuigiGame, _T("Title Luigi Game:"), index++);
 	AddString(hInstance, eStrTitleTop, _T("Title Top Score:"), index++);
 	AddString(hInstance, eStrTitleTopEnding, _T("Title Top Score Ending:"), index++);
+
+	AddString(hInstance, eStrHurrahMessage, _T("Hurrah Message:"), index++);
+	AddString(hInstance, eStrThankYouMessage, _T("Thank You Message:"), index++);
+	AddString(hInstance, eStrOurPrincessMessage, _T("Our Princess Message:"), index++);
+	AddString(hInstance, eStrAnotherCastleMessage, _T("Another Castle Message:"), index++);
 }
 
 BOOL CEngineStrings::OnInit(LPARAM lParam)
@@ -558,6 +563,11 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrTitleLuigiGame);
 	GetString(eStrTitleTop);
 	GetString(eStrTitleTopEnding);
+
+	GetString(eStrHurrahMessage);
+	GetString(eStrThankYouMessage);
+	GetString(eStrOurPrincessMessage);
+	GetString(eStrAnotherCastleMessage);
 
 	return FALSE;
 }
@@ -569,6 +579,11 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrTitleLuigiGame);
 	UpdateString(eStrTitleTop);
 	UpdateString(eStrTitleTopEnding);
+
+	UpdateString(eStrHurrahMessage);
+	UpdateString(eStrThankYouMessage);
+	UpdateString(eStrOurPrincessMessage);
+	UpdateString(eStrAnotherCastleMessage);
 
 	return PSNRET_NOERROR;
 }
