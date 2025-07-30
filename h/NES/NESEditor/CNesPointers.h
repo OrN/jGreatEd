@@ -59,6 +59,7 @@ typedef enum _tagNES_EPOINTERS
 	eStrUILuigi,
 	eStrUIWorld,
 	eStrUITime,
+	eStrUIScoreEnding,
 
 	eStrLevelWorld,
 	eStrLevelFantasyWorld,

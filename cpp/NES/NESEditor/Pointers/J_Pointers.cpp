@@ -39,6 +39,7 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrUILuigi ].eptr = NES_J_STR_UI_LUIGI;
 	m_eptr[ eStrUIWorld ].eptr = NES_J_STR_UI_WORLD;
 	m_eptr[ eStrUITime ].eptr = NES_J_STR_UI_TIME;
+	m_eptr[ eStrUIScoreEnding ].eptr = NES_J_STR_UI_SCORE_ENDING;
 
 	m_eptr[ eStrLevelWorld ].eptr = NES_J_STR_LEVEL_WORLD;
 	m_eptr[ eStrLevelFantasyWorld ].eptr = NES_J_STR_LEVEL_FANTASYWORLD;

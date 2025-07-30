@@ -200,6 +200,7 @@ VOID CNesGameEngineHack::LoadStrings()
 	DecodeString(eStrUILuigi, 5);
 	DecodeString(eStrUIWorld, 5);
 	DecodeString(eStrUITime, 4);
+	DecodeString(eStrUIScoreEnding, 1);
 
 	DecodeString(eStrLevelWorld, 5);
 
@@ -251,6 +252,7 @@ VOID CNesGameEngineHack::DumpStrings()
 	EncodeString(eStrUILuigi, 5);
 	EncodeString(eStrUIWorld, 5);
 	EncodeString(eStrUITime, 4);
+	EncodeString(eStrUIScoreEnding, 1);
 
 	EncodeString(eStrLevelWorld, 5);
 

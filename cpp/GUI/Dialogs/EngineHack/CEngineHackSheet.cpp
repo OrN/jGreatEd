@@ -564,8 +564,8 @@ VOID CEngineStrings::UpdateString(NES_EPOINTERS ptr)
 
 CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	: CEngineHackDlg(hInstance, TEXT("Strings"), hack),
-	m_stBypassName(hInstance, TEXT("Overwrite Mario/Luigi:"), 200, 282, 120, 10),
-	m_cbBypassName(hInstance, 0x200, WC_COMBOBOX, nullptr, 328, 280, -24, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL)
+	m_stBypassName(hInstance, TEXT("Overwrite Mario/Luigi:"), 200, 292, 120, 10),
+	m_cbBypassName(hInstance, 0x200, WC_COMBOBOX, nullptr, 328, 290, -24, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL)
 {
 	size_t index = 0;
 
@@ -579,6 +579,7 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrUILuigi, _T("UI Luigi:"), index++);
 	AddString(hInstance, eStrUIWorld, _T("UI World:"), index++);
 	AddString(hInstance, eStrUITime, _T("UI Time:"), index++);
+	AddString(hInstance, eStrUIScoreEnding, _T("UI Score Ending:"), index++);
 
 	AddString(hInstance, eStrLevelWorld, _T("Level World:"), index++);
 	AddString(hInstance, eStrLevelFantasyWorld, _T("Level Fantasy World:"), index++);
@@ -625,6 +626,7 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrUILuigi);
 	GetString(eStrUIWorld);
 	GetString(eStrUITime);
+	GetString(eStrUIScoreEnding);
 
 	GetString(eStrLevelWorld);
 	GetString(eStrLevelFantasyWorld);
@@ -686,6 +688,7 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrUILuigi);
 	UpdateString(eStrUIWorld);
 	UpdateString(eStrUITime);
+	UpdateString(eStrUIScoreEnding);
 
 	UpdateString(eStrLevelWorld);
 	UpdateString(eStrLevelFantasyWorld);
