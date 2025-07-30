@@ -83,6 +83,11 @@ typedef enum _tagNES_EPOINTERS
 	eStrToadOurPrincessMessage,
 	eStrToadAnotherCastleMessage,
 
+	eStrEndSuperPlayer,
+	eStrEndWeHope,
+	eStrEndSeeYou,
+	eStrEndMarioStaff,
+
 	eStrDialogueMarioMessage,
 	eStrDialogueLuigiMessage,
 

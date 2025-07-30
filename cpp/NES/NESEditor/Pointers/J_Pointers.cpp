@@ -63,6 +63,11 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrToadOurPrincessMessage ].eptr = NES_J_STR_TOAD_OURPRINCESS_MESSAGE;
 	m_eptr[ eStrToadAnotherCastleMessage ].eptr = NES_J_STR_TOAD_ANOTHERCASTLE_MESSAGE;
 
+	m_eptr[eStrEndSuperPlayer].eptr = NES_J_STR_END_SUPERPLAYER;
+	m_eptr[eStrEndWeHope].eptr = NES_J_STR_END_WEHOPE;
+	m_eptr[eStrEndSeeYou].eptr = NES_J_STR_END_SEEYOU;
+	m_eptr[eStrEndMarioStaff].eptr = NES_J_STR_END_MARIOSTAFF;
+
 	m_eptr[ eStrDialogueMarioMessage ].eptr = NES_J_STR_DIALOGUE_MARIO_MESSAGE;
 	m_eptr[ eStrDialogueLuigiMessage ].eptr = NES_J_STR_DIALOGUE_LUIGI_MESSAGE;
 

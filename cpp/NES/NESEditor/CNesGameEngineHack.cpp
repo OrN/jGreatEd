@@ -186,6 +186,11 @@ VOID CNesGameEngineHack::LoadStrings()
 	DecodeString(eStrPeachEachPlayerMessage);
 	DecodeString(eStrPeachThankYouMessage);
 
+	DecodeString(eStrEndSuperPlayer);
+	DecodeString(eStrEndWeHope);
+	DecodeString(eStrEndSeeYou);
+	DecodeString(eStrEndMarioStaff);
+
 	DecodeString(eStrDialogueMarioMessage, 5);
 	DecodeString(eStrDialogueLuigiMessage, 5);
 
@@ -233,6 +238,11 @@ VOID CNesGameEngineHack::DumpStrings()
 	EncodeString(eStrPeach100000PtsMessage);
 	EncodeString(eStrPeachEachPlayerMessage);
 	EncodeString(eStrPeachThankYouMessage);
+
+	EncodeString(eStrEndSuperPlayer);
+	EncodeString(eStrEndWeHope);
+	EncodeString(eStrEndSeeYou);
+	EncodeString(eStrEndMarioStaff);
 
 	EncodeString(eStrDialogueMarioMessage, 5);
 	EncodeString(eStrDialogueLuigiMessage, 5);

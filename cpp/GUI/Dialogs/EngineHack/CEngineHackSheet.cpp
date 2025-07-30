@@ -92,7 +92,7 @@ INT_PTR CEngineHackSheet::Show( CWindow * pParent )
 // base class
 
 CEngineHackDlg::CEngineHackDlg( HINSTANCE hInstance, LPCTSTR pszTitle, NES_ENGINE_HACK & hack )
-	: CDialog( hInstance, 432, 250, pszTitle ), m_hack( hack ),
+	: CDialog( hInstance, 432, 316, pszTitle ), m_hack( hack ),
 	m_ctlFrame( hInstance, -1, WC_BUTTON, pszTitle, 7, 7, -7, -7, WS_VISIBLE | BS_GROUPBOX )
 {
 	pushctl( m_ctlFrame );
@@ -506,8 +506,8 @@ VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 VOID CEngineStrings::AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index)
 {
 
-	UINT x = (index / 14) * 212;
-	UINT y = (index % 14) * 16;
+	UINT x = (index / 18) * 212;
+	UINT y = (index % 18) * 16;
 	CStaticControl staticControl(hInstance, label, 8 + x, 19 + y, 100, 10);
 	CEditControl editControl(hInstance, 0x100 + index, nullptr, 116 + x, 17 + y, 80, 13);
 
@@ -580,6 +580,11 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrPeachEachPlayerMessage, _T("Peach Each Player Message:"), index++);
 	AddString(hInstance, eStrPeachThankYouMessage, _T("Peach Thank You Message:"), index++);
 
+	AddString(hInstance, eStrEndSuperPlayer, _T("End Super Player:"), index++);
+	AddString(hInstance, eStrEndWeHope, _T("End We Hope:"), index++);
+	AddString(hInstance, eStrEndSeeYou, _T("End See You:"), index++);
+	AddString(hInstance, eStrEndMarioStaff, _T("End Mario Staff:"), index++);
+
 	AddString(hInstance, eStrDialogueMarioMessage, _T("Dialogue Mario:"), index++);
 	AddString(hInstance, eStrDialogueLuigiMessage, _T("Dialogue Luigi:"), index++);
 }
@@ -619,6 +624,11 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrPeach100000PtsMessage);
 	GetString(eStrPeachEachPlayerMessage);
 	GetString(eStrPeachThankYouMessage);
+
+	GetString(eStrEndSuperPlayer);
+	GetString(eStrEndWeHope);
+	GetString(eStrEndSeeYou);
+	GetString(eStrEndMarioStaff);
 
 	GetString(eStrDialogueMarioMessage);
 	GetString(eStrDialogueLuigiMessage);
@@ -661,6 +671,11 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrPeach100000PtsMessage);
 	UpdateString(eStrPeachEachPlayerMessage);
 	UpdateString(eStrPeachThankYouMessage);
+
+	UpdateString(eStrEndSuperPlayer);
+	UpdateString(eStrEndWeHope);
+	UpdateString(eStrEndSeeYou);
+	UpdateString(eStrEndMarioStaff);
 
 	UpdateString(eStrDialogueMarioMessage);
 	UpdateString(eStrDialogueLuigiMessage);
