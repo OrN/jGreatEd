@@ -54,8 +54,10 @@ VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr, size_t length)
 			character = '-';
 		else if (data == 0x2B) // !
 			character = '!';
-		else if (data == 0x76 || data == 0x75) // “ and ”
-			character = '"';
+		else if (data == 0x76) // “
+			character = L'“';
+		else if (data == 0x75) // ”
+			character = L'”';
 		else if (data == 0xAF) // .
 			character = '.';
 		else if (data == 0xCF) // Copyright
@@ -99,7 +101,7 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 		{
 			data = 0x2B;
 		}
-		else if (character == 0x22) // “ and ”
+		else if (character == 0x22) // "
 		{
 			if ((quoteCount++ % 2) == 0)
 				data = 0x76;
@@ -129,6 +131,16 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 		else if (character == 0x20) // Space
 		{
 			data = 0x24;
+		}
+		else if (character == L'\u201C') // “
+		{
+			data = 0x76;
+			quoteCount = 1;
+		}
+		else if (character == L'\u201D') // ”
+		{
+			data = 0x75;
+			quoteCount = 0;
 		}
 		else if (character == L'\u00A9') // Copyright
 		{
