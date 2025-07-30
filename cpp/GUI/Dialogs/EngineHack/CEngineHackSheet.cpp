@@ -558,6 +558,9 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrUITime, _T("UI Time:"), index++);
 
 	AddString(hInstance, eStrLevelWorld, _T("Level World:"), index++);
+	AddString(hInstance, eStrLevelFantasyWorld, _T("Level Fantasy World:"), index++);
+	AddString(hInstance, eStrLevelLetsTry, _T("Level Lets Try:"), index++);
+	AddString(hInstance, eStrLevelOneGame, _T("Level OneGame:"), index++);
 
 	AddString(hInstance, eStrGameOver, _T("Game Over:"), index++);
 	AddString(hInstance, eStrGameOverContinue, _T("Game Over Continue:"), index++);
@@ -595,6 +598,9 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrUITime);
 
 	GetString(eStrLevelWorld);
+	GetString(eStrLevelFantasyWorld);
+	GetString(eStrLevelLetsTry);
+	GetString(eStrLevelOneGame);
 
 	GetString(eStrGameOver);
 	GetString(eStrGameOverContinue);
@@ -634,6 +640,9 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrUITime);
 
 	UpdateString(eStrLevelWorld);
+	UpdateString(eStrLevelFantasyWorld);
+	UpdateString(eStrLevelLetsTry);
+	UpdateString(eStrLevelOneGame);
 
 	UpdateString(eStrGameOver);
 	UpdateString(eStrGameOverContinue);

@@ -41,6 +41,9 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrUITime ].eptr = NES_J_STR_UI_TIME;
 
 	m_eptr[ eStrLevelWorld ].eptr = NES_J_STR_LEVEL_WORLD;
+	m_eptr[ eStrLevelFantasyWorld ].eptr = NES_J_STR_LEVEL_FANTASYWORLD;
+	m_eptr[ eStrLevelLetsTry ].eptr = NES_J_STR_LEVEL_LETSTRY;
+	m_eptr[ eStrLevelOneGame ].eptr = NES_J_STR_LEVEL_ONEGAME;
 
 	m_eptr[ eStrGameOver ].eptr = NES_J_STR_GAMEOVER;
 	m_eptr[ eStrGameOverContinue ].eptr = NES_J_STR_GAMEOVER_CONTINUE;

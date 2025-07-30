@@ -54,10 +54,14 @@ VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr, size_t length)
 			character = '-';
 		else if (data == 0x2B) // !
 			character = '!';
+		else if (data == 0x76 || data == 0x75) // “ and ”
+			character = '"';
 		else if (data == 0xAF) // .
 			character = '.';
 		else if (data == 0xCF) // Copyright
 			character = L'\u00A9';
+		else if (data == 0xF2) // '
+			character = '\'';
 		else
 			printf("Unknown character: 0x%02x found in NES string!\n", data);
 
@@ -81,6 +85,7 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 		length = m_file.Data<BYTE>(uPatchPtr++);
 
 	CString str = m_data.strings[ptr];
+	size_t quoteCount = 0;
 
 	for (size_t i = 0; i < length; i++)
 	{
@@ -93,6 +98,17 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 		if (character == 0x21) // !
 		{
 			data = 0x2B;
+		}
+		else if (character == 0x22) // “ and ”
+		{
+			if ((quoteCount++ % 2) == 0)
+				data = 0x76;
+			else
+				data = 0x75;
+		}
+		else if (character == 0x27) // '
+		{
+			data = 0xF2;
 		}
 		else if (character == 0x2D) // -
 		{
@@ -156,6 +172,10 @@ VOID CNesGameEngineHack::LoadStrings()
 	DecodeString(eStrToadAnotherCastleMessage);
 
 	m_file.SelectFile(48);
+	DecodeString(eStrLevelFantasyWorld);
+	DecodeString(eStrLevelLetsTry);
+	DecodeString(eStrLevelOneGame);
+
 	DecodeString(eStrPeachPeaceMessage);
 	DecodeString(eStrPeachKingdomMessage);
 	DecodeString(eStrPeachHurrahMessage);
@@ -200,6 +220,10 @@ VOID CNesGameEngineHack::DumpStrings()
 	m_file.StoreSnapshot();
 
 	m_file.SelectFile(48);
+	EncodeString(eStrLevelFantasyWorld);
+	EncodeString(eStrLevelLetsTry);
+	EncodeString(eStrLevelOneGame);
+
 	EncodeString(eStrPeachPeaceMessage);
 	EncodeString(eStrPeachKingdomMessage);
 	EncodeString(eStrPeachHurrahMessage);

@@ -61,6 +61,9 @@ typedef enum _tagNES_EPOINTERS
 	eStrUITime,
 
 	eStrLevelWorld,
+	eStrLevelFantasyWorld,
+	eStrLevelLetsTry,
+	eStrLevelOneGame,
 
 	eStrGameOver,
 	eStrGameOverContinue,
