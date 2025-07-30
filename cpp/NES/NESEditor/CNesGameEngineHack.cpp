@@ -179,7 +179,7 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 			printf("Unknown character: 0x%02x encoding NES string!\n", character);
 		}
 
-		printf("Encoded: %lc, 0x%02x\n", character, data);
+		//printf("Encoded: %lc, 0x%02x\n", character, data);
 
 		m_file.Data<BYTE>(uPatchPtr++) = data;
 	}
@@ -444,7 +444,7 @@ VOID CNesGameEngineHack::SetBypassToadNamePatch( BOOL fPatch )
 	else
 	{
 		USHORT marioTextOffset = 0x0B;
-		m_file.Data<BYTE>(uPatchPtr++) = 0xB9; // STA
+		m_file.Data<BYTE>(uPatchPtr++) = 0x9D; // STA
 		m_file.Data<USHORT>(uPatchPtr) = m_eptr[eStrToadThankYouMessage].ptr + marioTextOffset;
 	}
 }

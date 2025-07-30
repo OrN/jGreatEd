@@ -563,7 +563,9 @@ VOID CEngineStrings::UpdateString(NES_EPOINTERS ptr)
 }
 
 CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
-	: CEngineHackDlg(hInstance, TEXT("Strings"), hack)
+	: CEngineHackDlg(hInstance, TEXT("Strings"), hack),
+	m_stBypassName(hInstance, TEXT("Overwrite Mario/Luigi:"), 200, 282, 120, 10),
+	m_cbBypassName(hInstance, 0x200, WC_COMBOBOX, nullptr, 328, 280, -24, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL)
 {
 	size_t index = 0;
 
@@ -606,6 +608,9 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrPeachThankYouMessage, _T("Peach Thank You Message:"), index++);
 	AddString(hInstance, eStrPeachMarioMessage, _T("Peach Mario:"), index++);
 	AddString(hInstance, eStrPeachLuigiMessage, _T("Peach Luigi:"), index++);
+
+	pushctl(m_stBypassName);
+	pushctl(m_cbBypassName);
 }
 
 BOOL CEngineStrings::OnInit(LPARAM lParam)
@@ -649,6 +654,22 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrPeachThankYouMessage);
 	GetString(eStrPeachMarioMessage);
 	GetString(eStrPeachLuigiMessage);
+
+	m_cbBypassName.cSendMessage(CB_ADDSTRING, 0, (LPARAM)TEXT("Overwrite all")); // 0
+	m_cbBypassName.cSendMessage(CB_ADDSTRING, 0, (LPARAM)TEXT("Overwrite only peach")); // 1
+	m_cbBypassName.cSendMessage(CB_ADDSTRING, 0, (LPARAM)TEXT("Overwrite only toad")); // 2
+	m_cbBypassName.cSendMessage(CB_ADDSTRING, 0, (LPARAM)TEXT("Don't overwrite")); // 3
+
+	DWORD selection = 0;
+	if (!Hack().bypassPeachNameWrite && Hack().bypassToadNameWrite)
+		selection = 1;
+	else if (Hack().bypassPeachNameWrite && !Hack().bypassToadNameWrite)
+		selection = 2;
+	else if (Hack().bypassPeachNameWrite && Hack().bypassToadNameWrite)
+		selection = 3;
+	m_cbBypassName.cSendMessage(CB_SETCURSEL, selection);
+
+	SetFocus(m_edControl[eStrTitleCopyright]);
 
 	return FALSE;
 }
@@ -695,14 +716,16 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrPeachMarioMessage);
 	UpdateString(eStrPeachLuigiMessage);
 
-	SetFocus(m_edControl[eStrTitleCopyright]);
+	DWORD selection = m_cbBypassName.cSendMessage(CB_GETCURSEL);
+	Hack().bypassPeachNameWrite = (selection == 2 || selection == 3);
+	Hack().bypassToadNameWrite = (selection == 1 || selection == 3);
 
 	return PSNRET_NOERROR;
 }
 
 VOID CEngineStrings::OnCommand(USHORT uCmd, USHORT uId, HWND hCtl)
 {
-	if (EN_CHANGE == uCmd)
+	if (CBN_SELENDOK == uCmd || EN_CHANGE == uCmd)
 	{
 		Changed();
 	}
