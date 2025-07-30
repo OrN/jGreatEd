@@ -584,7 +584,7 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrLevelWorld, _T("Level World:"), index++);
 	AddString(hInstance, eStrLevelFantasyWorld, _T("Level Fantasy World:"), index++);
 	AddString(hInstance, eStrLevelLetsTry, _T("Level Lets Try:"), index++);
-	AddString(hInstance, eStrLevelOneGame, _T("Level OneGame:"), index++);
+	AddString(hInstance, eStrLevelOneGame, _T("Level One Game:"), index++);
 
 	AddString(hInstance, eStrGameOver, _T("Game Over:"), index++);
 	AddString(hInstance, eStrGameOverContinue, _T("Game Over Continue:"), index++);
