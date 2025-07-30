@@ -93,7 +93,7 @@ VOID CMainWindow::Ctl_OnOpen()
 	catch ( std::exception & e )
 	{
 		CString sMessage = e.what();
-		ShowErrorF( TEXT( "Loader error. Is the file corrupted or not valid FDS file?\n\n%s" ), sMessage.GetString() );
+		ShowErrorF( TEXT( "Loader error. Is the file corrupted or not valid ROM file?\n\n%s" ), sMessage.GetString() );
 	}
 }
 

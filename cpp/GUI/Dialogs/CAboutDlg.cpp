@@ -36,7 +36,7 @@ CAboutDlg::CAboutDlg( HINSTANCE hInstance )
 BOOL CAboutDlg::OnInit( LPARAM lParam )
 {
 	m_icon.cSendMessage( STM_SETICON, SendMessage( *Parent(), WM_GETICON, ICON_BIG, 0 ), 0 );
-	m_static.Text( TEXT( "A FDS Super Mario Bros II Level Editor\n© Copyright by ALXR, 2020\n\n" ) );
+	m_static.Text( TEXT( "A Super Mario Bros II Level Editor\n© Copyright by ALXR, 2020\n\n" ) );
 
 	return TRUE;
 }
