@@ -219,7 +219,7 @@ public:
 	VOID											LoadNESBank(CFDSStream& stream, FDS_FILE_TYPE type, BYTE ID, USHORT ptr, USHORT size);
 	VOID											LoadNESFiles(CFDSStream& stream);
 	VOID											LoadFiles( CFDSStream & stream );
-	VOID											DumpNESFile(CFDSStream& stream, BYTE id, BYTE parentID, size_t offset);
+	VOID											DumpNESFile(CFDSStream& stream, BYTE id, std::vector<BYTE>& parents, size_t targetPtr, size_t offset);
 	VOID											DumpNESFiles(CFDSStream& stream);
 	VOID											DumpFiles( CFDSStream & stream );
 	CFDSDiskFile &									SelectFile( BYTE uId );

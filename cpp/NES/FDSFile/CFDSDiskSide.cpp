@@ -136,22 +136,31 @@ VOID CFDSDiskSide::DumpNESFiles(CFDSStream& stream)
 	// Write Header
 	stream.Write(m_nesHeader);
 
+	std::vector<BYTE> parentNone;
+	std::vector<BYTE> chrParentFiles;
+	std::vector<BYTE> prgParentFiles;
+
 	// PRG
-	DumpNESFile(stream, 6, 0, 0x0000);
-	DumpNESFile(stream, 8, 0, 0x0000);
-	DumpNESFile(stream, 5, 0, 0x0000);
-	DumpNESFile(stream, 32, 5, 0x470);
-	DumpNESFile(stream, 48, 5, 0x5D0);
-	DumpNESFile(stream, 64, 5, 0x2B4);
-	DumpNESFile(stream, 7, 0, 0x0000);
-	DumpNESFile(stream, 9, 0, 0x0000);
+	DumpNESFile(stream, 6, parentNone, 0x0000, 0x0000);
+	DumpNESFile(stream, 8, parentNone, 0x0000, 0x0000);
+	DumpNESFile(stream, 5, parentNone, 0x0000, 0x0000);
+	prgParentFiles.push_back(5);
+	prgParentFiles.push_back(15);
+	DumpNESFile(stream, 32, prgParentFiles, 0xC000, 0x470);
+	prgParentFiles.push_back(32);
+	DumpNESFile(stream, 48, prgParentFiles, 0xC000, 0x5D0);
+	prgParentFiles.push_back(48);
+	DumpNESFile(stream, 64, prgParentFiles, 0xC000, 0x2B4);
+	DumpNESFile(stream, 7, parentNone, 0x0000, 0x0000);
+	DumpNESFile(stream, 9, parentNone, 0x0000, 0x0000);
 
 	// CHR
-	DumpNESFile(stream, 1, 0, 0x0000);
-	DumpNESFile(stream, 16, 1, 0x760);
+	DumpNESFile(stream, 1, parentNone, 0x0000, 0x0000);
+	chrParentFiles.push_back(1);
+	DumpNESFile(stream, 16, chrParentFiles, 0x0000, 0x760);
 }
 
-VOID CFDSDiskSide::DumpNESFile(CFDSStream& stream, BYTE id, BYTE parentID, size_t offset)
+VOID CFDSDiskSide::DumpNESFile(CFDSStream& stream, BYTE id, std::vector<BYTE>& parents, size_t targetPtr, size_t offset)
 {
 	BYTE fileData[0x2000];
 
@@ -159,14 +168,19 @@ VOID CFDSDiskSide::DumpNESFile(CFDSStream& stream, BYTE id, BYTE parentID, size_
 	for (size_t i = 0; i < 0x2000; i++)
 		fileData[i] = 0x00;
 
-	// Write parent
-	for (auto& file : m_vFile)
+	// Write parents
+	for (auto parentID : parents)
 	{
-		if (file.GetFileId() != parentID)
-			continue;
+		for (auto& file : m_vFile)
+		{
+			if (file.GetFileId() != parentID)
+				continue;
 
-		for (size_t i = 0; i < file.GetFileData().uFileSize; i++)
-			fileData[i] = file[i];
+			size_t ptr = file.GetFileData().uTargetPtr - targetPtr;
+
+			for (size_t i = 0; i < file.GetFileData().uFileSize; i++)
+				fileData[ptr + i] = file[i];
+		}
 	}
 
 	// Write file data
