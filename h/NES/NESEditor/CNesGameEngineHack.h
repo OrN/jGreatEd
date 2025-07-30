@@ -40,6 +40,7 @@ typedef struct _tagNES_COIN_PAL_ROTATE_COLOR
 typedef BYTE NES_BOWSER_HAMMERS_WORLD;
 typedef BOOL NES_DEFAULT_SPINY_EGG_BEHAVIOR;
 typedef BOOL NES_INFINITE_LIVES;
+typedef BOOL NES_BYPASS_NAME_WRITE;
 
 typedef struct _tagNES_TIMER_VALUES
 {
@@ -57,6 +58,7 @@ typedef struct _tagNES_ENGINE_HACK
 	NES_TIMER_VALUES					timerValues;
 	NES_DEFAULT_SPINY_EGG_BEHAVIOR		defaultEggBehavior;
 	NES_INFINITE_LIVES					infiniteLives;
+	NES_BYPASS_NAME_WRITE				bypassPeachNameWrite;
 	std::map<NES_EPOINTERS, CString>	strings;
 	std::map<NES_EPOINTERS, size_t>		stringLengths;
 } NES_ENGINE_HACK, *PNES_ENGINE_HACK;
@@ -70,8 +72,10 @@ class CNesGameEngineHack
 
 	BOOL					IsSpinyEggPatched();
 	BOOL					IsInfiniteLivesPatched();
+	BOOL					IsBypassPeachNamePatched();
 	VOID					SetSpinyEggPatch( BOOL fPatch );
 	VOID					SetInfiniteLivesPatch( BOOL fPatch );
+	VOID					SetBypassPeachNamePatch( BOOL fPatch );
 
 	VOID					LoadStrings();
 	VOID					DumpStrings();

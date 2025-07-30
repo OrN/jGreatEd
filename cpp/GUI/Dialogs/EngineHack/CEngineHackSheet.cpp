@@ -604,9 +604,8 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrPeach100000PtsMessage, _T("Peach 100000 Pts Message:"), index++);
 	AddString(hInstance, eStrPeachEachPlayerMessage, _T("Peach Each Player Message:"), index++);
 	AddString(hInstance, eStrPeachThankYouMessage, _T("Peach Thank You Message:"), index++);
-
-	AddString(hInstance, eStrDialogueMarioMessage, _T("Dialogue Mario:"), index++);
-	AddString(hInstance, eStrDialogueLuigiMessage, _T("Dialogue Luigi:"), index++);
+	AddString(hInstance, eStrPeachMarioMessage, _T("Peach Mario:"), index++);
+	AddString(hInstance, eStrPeachLuigiMessage, _T("Peach Luigi:"), index++);
 }
 
 BOOL CEngineStrings::OnInit(LPARAM lParam)
@@ -648,9 +647,8 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrPeach100000PtsMessage);
 	GetString(eStrPeachEachPlayerMessage);
 	GetString(eStrPeachThankYouMessage);
-
-	GetString(eStrDialogueMarioMessage);
-	GetString(eStrDialogueLuigiMessage);
+	GetString(eStrPeachMarioMessage);
+	GetString(eStrPeachLuigiMessage);
 
 	return FALSE;
 }
@@ -694,9 +692,8 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrPeach100000PtsMessage);
 	UpdateString(eStrPeachEachPlayerMessage);
 	UpdateString(eStrPeachThankYouMessage);
-
-	UpdateString(eStrDialogueMarioMessage);
-	UpdateString(eStrDialogueLuigiMessage);
+	UpdateString(eStrPeachMarioMessage);
+	UpdateString(eStrPeachLuigiMessage);
 
 	SetFocus(m_edControl[eStrTitleCopyright]);
 

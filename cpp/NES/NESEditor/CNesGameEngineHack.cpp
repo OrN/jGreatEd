@@ -225,14 +225,13 @@ VOID CNesGameEngineHack::LoadStrings()
 	DecodeString(eStrPeach100000PtsMessage);
 	DecodeString(eStrPeachEachPlayerMessage);
 	DecodeString(eStrPeachThankYouMessage);
+	DecodeString(eStrPeachMarioMessage, 5);
+	DecodeString(eStrPeachLuigiMessage, 5);
 
 	DecodeString(eStrGameOverSuperPlayer);
 	DecodeString(eStrGameOverWeHope);
 	DecodeString(eStrGameOverSeeYou);
 	DecodeString(eStrGameOverMarioStaff);
-
-	DecodeString(eStrDialogueMarioMessage, 5);
-	DecodeString(eStrDialogueLuigiMessage, 5);
 
 	m_file.EndSnapshot();
 }
@@ -278,14 +277,13 @@ VOID CNesGameEngineHack::DumpStrings()
 	EncodeString(eStrPeach100000PtsMessage);
 	EncodeString(eStrPeachEachPlayerMessage);
 	EncodeString(eStrPeachThankYouMessage);
+	EncodeString(eStrPeachMarioMessage, 5);
+	EncodeString(eStrPeachLuigiMessage, 5);
 
 	EncodeString(eStrGameOverSuperPlayer);
 	EncodeString(eStrGameOverWeHope);
 	EncodeString(eStrGameOverSeeYou);
 	EncodeString(eStrGameOverMarioStaff);
-
-	EncodeString(eStrDialogueMarioMessage, 5);
-	EncodeString(eStrDialogueLuigiMessage, 5);
 	m_file.StoreSnapshot();
 
 	m_file.EndSnapshot();
@@ -306,6 +304,7 @@ VOID CNesGameEngineHack::LoadData()
 
 	m_data.defaultEggBehavior = !IsSpinyEggPatched();
 	m_data.infiniteLives = IsInfiniteLivesPatched();
+	m_data.bypassPeachNameWrite = IsBypassPeachNamePatched();
 
 	LoadStrings();
 }
@@ -324,6 +323,7 @@ VOID CNesGameEngineHack::DumpData()
 	m_file.Data< NES_BOWSER_HAMMERS_WORLD>( m_eptr[ eBowserHammersWorld ].ptr ) = m_data.bowserHammers;
 	SetSpinyEggPatch( !m_data.defaultEggBehavior );
 	SetInfiniteLivesPatch( m_data.infiniteLives );
+	SetBypassPeachNamePatch( m_data.bypassPeachNameWrite );
 
 	DumpStrings();
 }
@@ -339,6 +339,15 @@ BOOL CNesGameEngineHack::IsSpinyEggPatched()
 BOOL CNesGameEngineHack::IsInfiniteLivesPatched()
 {
 	return ( 0xEA == m_file.Data<BYTE>(m_eptr[eInfiniteLivesPatchPlace].ptr) );
+}
+
+BOOL CNesGameEngineHack::IsBypassPeachNamePatched()
+{
+	m_file.BeginSnapshot();
+	m_file.SelectFile(48);
+	BOOL patched = (0x60 == m_file.Data<BYTE>(m_eptr[eBypassPeachName].ptr));
+	m_file.EndSnapshot();
+	return patched;
 }
 
 VOID CNesGameEngineHack::SetInfiniteLivesPatch(BOOL fPatch)
@@ -395,6 +404,23 @@ VOID CNesGameEngineHack::SetSpinyEggPatch( BOOL fPatch )
 		uPatchPtr += 2;
 		m_file.Data<BYTE>( uPatchPtr++ ) = 0x88;							// DEY
 	}
+}
+
+VOID CNesGameEngineHack::SetBypassPeachNamePatch( BOOL fPatch )
+{
+	USHORT uPatchPtr = m_eptr[ eBypassPeachName ].ptr;
+
+	m_file.BeginSnapshot();
+	m_file.SelectFile(48);
+	if (fPatch)
+	{
+		m_file.Data<BYTE>(uPatchPtr) = 0x60; // RTS
+	}
+	else
+	{
+		m_file.Data<BYTE>(uPatchPtr) = 0xA2; // LDX
+	}
+	m_file.EndSnapshot();
 }
 
 const NES_ENGINE_HACK & CNesGameEngineHack::Read() const

@@ -82,13 +82,14 @@ typedef enum _tagNES_EPOINTERS
 	eStrPeach100000PtsMessage,
 	eStrPeachEachPlayerMessage,
 	eStrPeachThankYouMessage,
+	eStrPeachMarioMessage,
+	eStrPeachLuigiMessage,
 
 	eStrToadThankYouMessage,
 	eStrToadOurPrincessMessage,
 	eStrToadAnotherCastleMessage,
 
-	eStrDialogueMarioMessage,
-	eStrDialogueLuigiMessage,
+	eBypassPeachName,
 
 	eEnemyPtr,
 	eEnemyPtrHi,

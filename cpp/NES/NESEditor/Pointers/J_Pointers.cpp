@@ -62,13 +62,14 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrPeach100000PtsMessage ].eptr = NES_J_STR_PEACH_100000PTS_MESSAGE;
 	m_eptr[ eStrPeachEachPlayerMessage ].eptr = NES_J_STR_PEACH_EACHPLAYER_MESSAGE;
 	m_eptr[ eStrPeachThankYouMessage ].eptr = NES_J_STR_PEACH_THANKYOU_MESSAGE;
+	m_eptr[ eStrPeachMarioMessage ].eptr = NES_J_STR_PEACH_MARIO_MESSAGE;
+	m_eptr[ eStrPeachLuigiMessage ].eptr = NES_J_STR_PEACH_LUIGI_MESSAGE;
 
 	m_eptr[ eStrToadThankYouMessage ].eptr = NES_J_STR_TOAD_THANKYOU_MESSAGE;
 	m_eptr[ eStrToadOurPrincessMessage ].eptr = NES_J_STR_TOAD_OURPRINCESS_MESSAGE;
 	m_eptr[ eStrToadAnotherCastleMessage ].eptr = NES_J_STR_TOAD_ANOTHERCASTLE_MESSAGE;
 
-	m_eptr[ eStrDialogueMarioMessage ].eptr = NES_J_STR_DIALOGUE_MARIO_MESSAGE;
-	m_eptr[ eStrDialogueLuigiMessage ].eptr = NES_J_STR_DIALOGUE_LUIGI_MESSAGE;
+	m_eptr[ eBypassPeachName ].eptr = NES_J_BYPASS_PEACH_NAME;
 
 	m_eptr[ eEnemyPtr ].eptr = NES_J_ENEMY_PTR;
 	m_eptr[ eEnemyPtrHi ].eptr = NES_J_ENEMY_PTR_HI;
