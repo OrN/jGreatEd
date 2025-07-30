@@ -563,12 +563,22 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrGameOverContinue, _T("Game Over Continue:"), index++);
 	AddString(hInstance, eStrGameOverRetry, _T("Game Over Retry:"), index++);
 
-	AddString(hInstance, eStrHurrahMessage, _T("Hurrah Message:"), index++);
-	AddString(hInstance, eStrThankYouMessage, _T("Thank You Message:"), index++);
-	AddString(hInstance, eStrThankYouMarioMessage, _T("Thank You Mario Message:"), index++);
-	AddString(hInstance, eStrThankYouLuigiMessage, _T("Thank You Luigi Message:"), index++);
-	AddString(hInstance, eStrOurPrincessMessage, _T("Our Princess Message:"), index++);
-	AddString(hInstance, eStrAnotherCastleMessage, _T("Another Castle Message:"), index++);
+	AddString(hInstance, eStrToadThankYouMessage, _T("Toad Thank You Message:"), index++);
+	AddString(hInstance, eStrToadOurPrincessMessage, _T("Toad Our Princess Message:"), index++);
+	AddString(hInstance, eStrToadAnotherCastleMessage, _T("Toad Another Castle Message:"), index++);
+
+	AddString(hInstance, eStrPeachPeaceMessage, _T("Peach Peace Message:"), index++);
+	AddString(hInstance, eStrPeachKingdomMessage, _T("Peach Kingdom Message:"), index++);
+	AddString(hInstance, eStrPeachHurrahMessage, _T("Peach Hurrah Message:"), index++);
+	AddString(hInstance, eStrPeachOnlyHeroMessage, _T("Peach Only Hero Message:"), index++);
+	AddString(hInstance, eStrPeachTripMessage, _T("Peach Trip Message:"), index++);
+	AddString(hInstance, eStrPeachFriendshipMessage, _T("Peach Friendship Message:"), index++);
+	AddString(hInstance, eStrPeach100000PtsMessage, _T("Peach 100000 Pts Message:"), index++);
+	AddString(hInstance, eStrPeachEachPlayerMessage, _T("Peach Each Player Message:"), index++);
+	AddString(hInstance, eStrPeachThankYouMessage, _T("Peach Thank You Message:"), index++);
+
+	AddString(hInstance, eStrDialogueMarioMessage, _T("Dialogue Mario:"), index++);
+	AddString(hInstance, eStrDialogueLuigiMessage, _T("Dialogue Luigi:"), index++);
 }
 
 BOOL CEngineStrings::OnInit(LPARAM lParam)
@@ -590,12 +600,22 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrGameOverContinue);
 	GetString(eStrGameOverRetry);
 
-	GetString(eStrHurrahMessage);
-	GetString(eStrThankYouMessage);
-	GetString(eStrThankYouMarioMessage);
-	GetString(eStrThankYouLuigiMessage);
-	GetString(eStrOurPrincessMessage);
-	GetString(eStrAnotherCastleMessage);
+	GetString(eStrToadThankYouMessage);
+	GetString(eStrToadOurPrincessMessage);
+	GetString(eStrToadAnotherCastleMessage);
+
+	GetString(eStrPeachPeaceMessage);
+	GetString(eStrPeachKingdomMessage);
+	GetString(eStrPeachHurrahMessage);
+	GetString(eStrPeachOnlyHeroMessage);
+	GetString(eStrPeachTripMessage);
+	GetString(eStrPeachFriendshipMessage);
+	GetString(eStrPeach100000PtsMessage);
+	GetString(eStrPeachEachPlayerMessage);
+	GetString(eStrPeachThankYouMessage);
+
+	GetString(eStrDialogueMarioMessage);
+	GetString(eStrDialogueLuigiMessage);
 
 	return FALSE;
 }
@@ -619,12 +639,24 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrGameOverContinue);
 	UpdateString(eStrGameOverRetry);
 
-	UpdateString(eStrHurrahMessage);
-	UpdateString(eStrThankYouMessage);
-	UpdateString(eStrThankYouMarioMessage);
-	UpdateString(eStrThankYouLuigiMessage);
-	UpdateString(eStrOurPrincessMessage);
-	UpdateString(eStrAnotherCastleMessage);
+	UpdateString(eStrToadThankYouMessage);
+	UpdateString(eStrToadOurPrincessMessage);
+	UpdateString(eStrToadAnotherCastleMessage);
+
+	UpdateString(eStrPeachPeaceMessage);
+	UpdateString(eStrPeachKingdomMessage);
+	UpdateString(eStrPeachHurrahMessage);
+	UpdateString(eStrPeachOnlyHeroMessage);
+	UpdateString(eStrPeachTripMessage);
+	UpdateString(eStrPeachFriendshipMessage);
+	UpdateString(eStrPeach100000PtsMessage);
+	UpdateString(eStrPeachEachPlayerMessage);
+	UpdateString(eStrPeachThankYouMessage);
+
+	UpdateString(eStrDialogueMarioMessage);
+	UpdateString(eStrDialogueLuigiMessage);
+
+	SetFocus(m_edControl[eStrTitleCopyright]);
 
 	return PSNRET_NOERROR;
 }

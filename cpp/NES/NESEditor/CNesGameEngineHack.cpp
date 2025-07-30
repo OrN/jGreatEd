@@ -54,6 +54,8 @@ VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr, size_t length)
 			character = '-';
 		else if (data == 0x2B) // !
 			character = '!';
+		else if (data == 0xAF) // .
+			character = '.';
 		else if (data == 0xCF) // Copyright
 			character = L'\u00A9';
 		else
@@ -95,6 +97,10 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 		else if (character == 0x2D) // -
 		{
 			data = 0x28;
+		}
+		else if (character == 0x2E) // .
+		{
+			data = 0xAF;
 		}
 		else if (character >= 0x30 && character <= 0x39) // Number
 		{
@@ -145,14 +151,23 @@ VOID CNesGameEngineHack::LoadStrings()
 	DecodeString(eStrGameOverContinue);
 	DecodeString(eStrGameOverRetry);
 
-	DecodeString(eStrOurPrincessMessage);
-	DecodeString(eStrAnotherCastleMessage);
+	DecodeString(eStrToadThankYouMessage);
+	DecodeString(eStrToadOurPrincessMessage);
+	DecodeString(eStrToadAnotherCastleMessage);
 
 	m_file.SelectFile(48);
-	DecodeString(eStrHurrahMessage);
-	DecodeString(eStrThankYouMessage);
-	DecodeString(eStrThankYouMarioMessage, 5);
-	DecodeString(eStrThankYouLuigiMessage, 5);
+	DecodeString(eStrPeachPeaceMessage);
+	DecodeString(eStrPeachKingdomMessage);
+	DecodeString(eStrPeachHurrahMessage);
+	DecodeString(eStrPeachOnlyHeroMessage);
+	DecodeString(eStrPeachTripMessage);
+	DecodeString(eStrPeachFriendshipMessage);
+	DecodeString(eStrPeach100000PtsMessage);
+	DecodeString(eStrPeachEachPlayerMessage);
+	DecodeString(eStrPeachThankYouMessage);
+
+	DecodeString(eStrDialogueMarioMessage, 5);
+	DecodeString(eStrDialogueLuigiMessage, 5);
 
 	m_file.EndSnapshot();
 }
@@ -179,15 +194,24 @@ VOID CNesGameEngineHack::DumpStrings()
 	EncodeString(eStrGameOverContinue);
 	EncodeString(eStrGameOverRetry);
 
-	EncodeString(eStrOurPrincessMessage);
-	EncodeString(eStrAnotherCastleMessage);
+	EncodeString(eStrToadThankYouMessage);
+	EncodeString(eStrToadOurPrincessMessage);
+	EncodeString(eStrToadAnotherCastleMessage);
 	m_file.StoreSnapshot();
 
 	m_file.SelectFile(48);
-	EncodeString(eStrHurrahMessage);
-	EncodeString(eStrThankYouMessage);
-	EncodeString(eStrThankYouMarioMessage, 5);
-	EncodeString(eStrThankYouLuigiMessage, 5);
+	EncodeString(eStrPeachPeaceMessage);
+	EncodeString(eStrPeachKingdomMessage);
+	EncodeString(eStrPeachHurrahMessage);
+	EncodeString(eStrPeachOnlyHeroMessage);
+	EncodeString(eStrPeachTripMessage);
+	EncodeString(eStrPeachFriendshipMessage);
+	EncodeString(eStrPeach100000PtsMessage);
+	EncodeString(eStrPeachEachPlayerMessage);
+	EncodeString(eStrPeachThankYouMessage);
+
+	EncodeString(eStrDialogueMarioMessage, 5);
+	EncodeString(eStrDialogueLuigiMessage, 5);
 	m_file.StoreSnapshot();
 
 	m_file.EndSnapshot();

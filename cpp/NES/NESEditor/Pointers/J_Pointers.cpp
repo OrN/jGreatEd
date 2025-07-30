@@ -20,8 +20,8 @@ VOID CNesPointers::LoadPointersNES()
 	m_eptr[eVRAMAddrTableHi].eptr = NES_J_VRAM_NES_TBL_PTR_HI;
 	m_eptr[eVRAMAddrTableLo].eptr = NES_J_VRAM_NES_TBL_PTR_LO;
 
-	m_eptr[eStrHurrahMessage].eptr = NES_J_STR_NES_HURRAH_MESSAGE;
-	m_eptr[eStrThankYouMessage].eptr = NES_J_STR_NES_THANKYOU_MESSAGE;
+	m_eptr[eStrPeachHurrahMessage].eptr = NES_J_STR_NES_PEACH_HURRAH_MESSAGE;
+	m_eptr[eStrPeachThankYouMessage].eptr = NES_J_STR_NES_PEACH_THANKYOU_MESSAGE;
 }
 
 VOID CNesPointers::LoadPointersJ()
@@ -46,12 +46,22 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrGameOverContinue ].eptr = NES_J_STR_GAMEOVER_CONTINUE;
 	m_eptr[ eStrGameOverRetry ].eptr = NES_J_STR_GAMEOVER_RETRY;
 
-	m_eptr[ eStrHurrahMessage ].eptr = NES_J_STR_HURRAH_MESSAGE;
-	m_eptr[ eStrThankYouMessage ].eptr = NES_J_STR_THANKYOU_MESSAGE;
-	m_eptr[ eStrThankYouMarioMessage ].eptr = NES_J_STR_THANKYOUMARIO_MESSAGE;
-	m_eptr[ eStrThankYouLuigiMessage ].eptr = NES_J_STR_THANKYOULUIGI_MESSAGE;
-	m_eptr[ eStrOurPrincessMessage ].eptr = NES_J_STR_OURPRINCESS_MESSAGE;
-	m_eptr[ eStrAnotherCastleMessage ].eptr = NES_J_STR_ANOTHERCASTLE_MESSAGE;
+	m_eptr[ eStrPeachPeaceMessage ].eptr = NES_J_STR_PEACH_PEACE_MESSAGE;
+	m_eptr[ eStrPeachKingdomMessage ].eptr = NES_J_STR_PEACH_KINGDOM_MESSAGE;
+	m_eptr[ eStrPeachHurrahMessage ].eptr = NES_J_STR_PEACH_HURRAH_MESSAGE;
+	m_eptr[ eStrPeachOnlyHeroMessage ].eptr = NES_J_STR_PEACH_ONLYHERO_MESSAGE;
+	m_eptr[ eStrPeachTripMessage ].eptr = NES_J_STR_PEACH_TRIP_MESSAGE;
+	m_eptr[ eStrPeachFriendshipMessage ].eptr = NES_J_STR_PEACH_FRIENDSHIP_MESSAGE;
+	m_eptr[ eStrPeach100000PtsMessage ].eptr = NES_J_STR_PEACH_100000PTS_MESSAGE;
+	m_eptr[ eStrPeachEachPlayerMessage ].eptr = NES_J_STR_PEACH_EACHPLAYER_MESSAGE;
+	m_eptr[ eStrPeachThankYouMessage ].eptr = NES_J_STR_PEACH_THANKYOU_MESSAGE;
+
+	m_eptr[ eStrToadThankYouMessage ].eptr = NES_J_STR_TOAD_THANKYOU_MESSAGE;
+	m_eptr[ eStrToadOurPrincessMessage ].eptr = NES_J_STR_TOAD_OURPRINCESS_MESSAGE;
+	m_eptr[ eStrToadAnotherCastleMessage ].eptr = NES_J_STR_TOAD_ANOTHERCASTLE_MESSAGE;
+
+	m_eptr[ eStrDialogueMarioMessage ].eptr = NES_J_STR_DIALOGUE_MARIO_MESSAGE;
+	m_eptr[ eStrDialogueLuigiMessage ].eptr = NES_J_STR_DIALOGUE_LUIGI_MESSAGE;
 
 	m_eptr[ eEnemyPtr ].eptr = NES_J_ENEMY_PTR;
 	m_eptr[ eEnemyPtrHi ].eptr = NES_J_ENEMY_PTR_HI;

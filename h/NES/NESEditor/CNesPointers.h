@@ -66,12 +66,22 @@ typedef enum _tagNES_EPOINTERS
 	eStrGameOverContinue,
 	eStrGameOverRetry,
 
-	eStrHurrahMessage,
-	eStrThankYouMessage,
-	eStrThankYouMarioMessage,
-	eStrThankYouLuigiMessage,
-	eStrOurPrincessMessage,
-	eStrAnotherCastleMessage,
+	eStrPeachPeaceMessage,
+	eStrPeachKingdomMessage,
+	eStrPeachHurrahMessage,
+	eStrPeachOnlyHeroMessage,
+	eStrPeachTripMessage,
+	eStrPeachFriendshipMessage,
+	eStrPeach100000PtsMessage,
+	eStrPeachEachPlayerMessage,
+	eStrPeachThankYouMessage,
+
+	eStrToadThankYouMessage,
+	eStrToadOurPrincessMessage,
+	eStrToadAnotherCastleMessage,
+
+	eStrDialogueMarioMessage,
+	eStrDialogueLuigiMessage,
 
 	eEnemyPtr,
 	eEnemyPtrHi,
