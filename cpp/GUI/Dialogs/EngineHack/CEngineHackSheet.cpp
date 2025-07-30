@@ -586,6 +586,10 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrGameOver, _T("Game Over:"), index++);
 	AddString(hInstance, eStrGameOverContinue, _T("Game Over Continue:"), index++);
 	AddString(hInstance, eStrGameOverRetry, _T("Game Over Retry:"), index++);
+	AddString(hInstance, eStrGameOverSuperPlayer, _T("Game Over Super Player:"), index++);
+	AddString(hInstance, eStrGameOverWeHope, _T("Game Over We Hope:"), index++);
+	AddString(hInstance, eStrGameOverSeeYou, _T("Game Over See You:"), index++);
+	AddString(hInstance, eStrGameOverMarioStaff, _T("Game Over Mario Staff:"), index++);
 
 	AddString(hInstance, eStrToadThankYouMessage, _T("Toad Thank You Message:"), index++);
 	AddString(hInstance, eStrToadOurPrincessMessage, _T("Toad Our Princess Message:"), index++);
@@ -600,11 +604,6 @@ CEngineStrings::CEngineStrings(HINSTANCE hInstance, NES_ENGINE_HACK& hack)
 	AddString(hInstance, eStrPeach100000PtsMessage, _T("Peach 100000 Pts Message:"), index++);
 	AddString(hInstance, eStrPeachEachPlayerMessage, _T("Peach Each Player Message:"), index++);
 	AddString(hInstance, eStrPeachThankYouMessage, _T("Peach Thank You Message:"), index++);
-
-	AddString(hInstance, eStrEndSuperPlayer, _T("End Super Player:"), index++);
-	AddString(hInstance, eStrEndWeHope, _T("End We Hope:"), index++);
-	AddString(hInstance, eStrEndSeeYou, _T("End See You:"), index++);
-	AddString(hInstance, eStrEndMarioStaff, _T("End Mario Staff:"), index++);
 
 	AddString(hInstance, eStrDialogueMarioMessage, _T("Dialogue Mario:"), index++);
 	AddString(hInstance, eStrDialogueLuigiMessage, _T("Dialogue Luigi:"), index++);
@@ -631,6 +630,10 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrGameOver);
 	GetString(eStrGameOverContinue);
 	GetString(eStrGameOverRetry);
+	GetString(eStrGameOverSuperPlayer);
+	GetString(eStrGameOverWeHope);
+	GetString(eStrGameOverSeeYou);
+	GetString(eStrGameOverMarioStaff);
 
 	GetString(eStrToadThankYouMessage);
 	GetString(eStrToadOurPrincessMessage);
@@ -645,11 +648,6 @@ BOOL CEngineStrings::OnInit(LPARAM lParam)
 	GetString(eStrPeach100000PtsMessage);
 	GetString(eStrPeachEachPlayerMessage);
 	GetString(eStrPeachThankYouMessage);
-
-	GetString(eStrEndSuperPlayer);
-	GetString(eStrEndWeHope);
-	GetString(eStrEndSeeYou);
-	GetString(eStrEndMarioStaff);
 
 	GetString(eStrDialogueMarioMessage);
 	GetString(eStrDialogueLuigiMessage);
@@ -678,6 +676,10 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrGameOver);
 	UpdateString(eStrGameOverContinue);
 	UpdateString(eStrGameOverRetry);
+	UpdateString(eStrGameOverSuperPlayer);
+	UpdateString(eStrGameOverWeHope);
+	UpdateString(eStrGameOverSeeYou);
+	UpdateString(eStrGameOverMarioStaff);
 
 	UpdateString(eStrToadThankYouMessage);
 	UpdateString(eStrToadOurPrincessMessage);
@@ -692,11 +694,6 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrPeach100000PtsMessage);
 	UpdateString(eStrPeachEachPlayerMessage);
 	UpdateString(eStrPeachThankYouMessage);
-
-	UpdateString(eStrEndSuperPlayer);
-	UpdateString(eStrEndWeHope);
-	UpdateString(eStrEndSeeYou);
-	UpdateString(eStrEndMarioStaff);
 
 	UpdateString(eStrDialogueMarioMessage);
 	UpdateString(eStrDialogueLuigiMessage);

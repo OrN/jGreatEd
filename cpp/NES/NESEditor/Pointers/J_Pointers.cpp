@@ -48,6 +48,10 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrGameOver ].eptr = NES_J_STR_GAMEOVER;
 	m_eptr[ eStrGameOverContinue ].eptr = NES_J_STR_GAMEOVER_CONTINUE;
 	m_eptr[ eStrGameOverRetry ].eptr = NES_J_STR_GAMEOVER_RETRY;
+	m_eptr[ eStrGameOverSuperPlayer ].eptr = NES_J_STR_GAMEOVER_SUPERPLAYER;
+	m_eptr[ eStrGameOverWeHope ].eptr = NES_J_STR_GAMEOVER_WEHOPE;
+	m_eptr[ eStrGameOverSeeYou ].eptr = NES_J_STR_GAMEOVER_SEEYOU;
+	m_eptr[ eStrGameOverMarioStaff ].eptr = NES_J_STR_GAMEOVER_MARIOSTAFF;
 
 	m_eptr[ eStrPeachPeaceMessage ].eptr = NES_J_STR_PEACH_PEACE_MESSAGE;
 	m_eptr[ eStrPeachKingdomMessage ].eptr = NES_J_STR_PEACH_KINGDOM_MESSAGE;
@@ -62,11 +66,6 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrToadThankYouMessage ].eptr = NES_J_STR_TOAD_THANKYOU_MESSAGE;
 	m_eptr[ eStrToadOurPrincessMessage ].eptr = NES_J_STR_TOAD_OURPRINCESS_MESSAGE;
 	m_eptr[ eStrToadAnotherCastleMessage ].eptr = NES_J_STR_TOAD_ANOTHERCASTLE_MESSAGE;
-
-	m_eptr[eStrEndSuperPlayer].eptr = NES_J_STR_END_SUPERPLAYER;
-	m_eptr[eStrEndWeHope].eptr = NES_J_STR_END_WEHOPE;
-	m_eptr[eStrEndSeeYou].eptr = NES_J_STR_END_SEEYOU;
-	m_eptr[eStrEndMarioStaff].eptr = NES_J_STR_END_MARIOSTAFF;
 
 	m_eptr[ eStrDialogueMarioMessage ].eptr = NES_J_STR_DIALOGUE_MARIO_MESSAGE;
 	m_eptr[ eStrDialogueLuigiMessage ].eptr = NES_J_STR_DIALOGUE_LUIGI_MESSAGE;
