@@ -503,6 +503,34 @@ VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 
 ///
 
+VOID CEngineStrings::SanitizeString(NES_EPOINTERS ptr)
+{
+	CString& str = Hack().strings[ptr];
+	size_t maxLength = Hack().stringLengths[ptr];
+
+	// Make string uppercase
+	str.MakeUpper();
+
+	size_t length = 0;
+	for (int i = 0; i < str.GetLength(); i++)
+	{
+		if (length == maxLength)
+		{
+			str = str.Left(i);
+			break;
+		}
+
+		wchar_t character = str.GetAt(i);
+
+		if (character == '$') // Special Function
+			i += 2;
+
+		// TODO: REMOVE INVALID CHARACTERS FROM STRING
+
+		length++;
+	}
+}
+
 VOID CEngineStrings::AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index)
 {
 
@@ -528,14 +556,7 @@ VOID CEngineStrings::UpdateString(NES_EPOINTERS ptr)
 	// Set string to user input
 	Hack().strings[ptr] = m_edControl[ptr].Text().c_str();
 
-	// TODO: REMOVE INVALID CHARACTERS FROM STRING
-
-	// Make string uppercase
-	Hack().strings[ptr].MakeUpper();
-
-	// Truncate string if it's too big
-	if (Hack().strings[ptr].GetLength() >= Hack().stringLengths[ptr])
-		Hack().strings[ptr].Truncate(Hack().stringLengths[ptr]);
+	SanitizeString(ptr);
 
 	// Reflect changes on the text box
 	GetString(ptr);

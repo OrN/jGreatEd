@@ -64,10 +64,22 @@ VOID CNesGameEngineHack::DecodeString(NES_EPOINTERS ptr, size_t length)
 			character = L'\u00A9';
 		else if (data == 0xF2) // '
 			character = '\'';
-		else
-			printf("Unknown character: 0x%02x found in NES string!\n", data);
+		else // Invalid character
+			character = '\0';
 
-		str.AppendChar(character);
+		if (character == '\0')
+		{
+			char hex[4];
+			sprintf(hex, "$%02X", data);
+
+			str += hex;
+
+			printf("Unknown character: 0x%02x found in NES string!\n", data);
+		}
+		else
+		{
+			str.AppendChar(character);
+		}
 	}
 
 	m_data.strings[ptr] = str.Trim();
@@ -107,6 +119,22 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 				data = 0x76;
 			else
 				data = 0x75;
+		}
+		else if (character == 0x24) // $ - Special Function for hex value
+		{
+			CString value = str.Mid(i + 1, 2);
+			try
+			{
+				data = (BYTE)std::stoi(value.GetBuffer(), 0, 16);
+				printf("Converting value: %ls to 0x%02x\n", value.GetBuffer(), data);
+			}
+			catch (std::exception& e)
+			{
+				char error[2048];
+				sprintf(error, "Invalid hex value in game string '%ls'", str.GetBuffer());
+				throw std::exception(error);
+			}
+			i += 2;
 		}
 		else if (character == 0x27) // '
 		{
@@ -153,7 +181,7 @@ VOID CNesGameEngineHack::EncodeString(NES_EPOINTERS ptr, size_t length)
 
 		printf("Encoded: %lc, 0x%02x\n", character, data);
 
-		m_file.Data<BYTE>(uPatchPtr + i) = data;
+		m_file.Data<BYTE>(uPatchPtr++) = data;
 	}
 }
 

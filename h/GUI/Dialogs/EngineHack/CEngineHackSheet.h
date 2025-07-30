@@ -157,6 +157,7 @@ class CEngineStrings : public CEngineHackDlg
 	std::map<NES_EPOINTERS, CStaticControl>	m_stControl;
 	std::map<NES_EPOINTERS, CEditControl>	m_edControl;
 
+	VOID					SanitizeString(NES_EPOINTERS ptr);
 	VOID					AddString(HINSTANCE hInstance, NES_EPOINTERS ptr, LPCTSTR label, size_t index);
 	VOID					GetString(NES_EPOINTERS ptr);
 	VOID					UpdateString(NES_EPOINTERS ptr);
