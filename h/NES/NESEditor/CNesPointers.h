@@ -90,6 +90,7 @@ typedef enum _tagNES_EPOINTERS
 	eStrToadAnotherCastleMessage,
 
 	eBypassPeachName,
+	eBypassToadName,
 
 	eEnemyPtr,
 	eEnemyPtrHi,

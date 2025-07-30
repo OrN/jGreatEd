@@ -70,6 +70,7 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eStrToadAnotherCastleMessage ].eptr = NES_J_STR_TOAD_ANOTHERCASTLE_MESSAGE;
 
 	m_eptr[ eBypassPeachName ].eptr = NES_J_BYPASS_PEACH_NAME;
+	m_eptr[ eBypassToadName ].eptr = NES_J_BYPASS_TOAD_NAME;
 
 	m_eptr[ eEnemyPtr ].eptr = NES_J_ENEMY_PTR;
 	m_eptr[ eEnemyPtrHi ].eptr = NES_J_ENEMY_PTR_HI;

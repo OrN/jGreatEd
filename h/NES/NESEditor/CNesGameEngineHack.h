@@ -59,6 +59,7 @@ typedef struct _tagNES_ENGINE_HACK
 	NES_DEFAULT_SPINY_EGG_BEHAVIOR		defaultEggBehavior;
 	NES_INFINITE_LIVES					infiniteLives;
 	NES_BYPASS_NAME_WRITE				bypassPeachNameWrite;
+	NES_BYPASS_NAME_WRITE				bypassToadNameWrite;
 	std::map<NES_EPOINTERS, CString>	strings;
 	std::map<NES_EPOINTERS, size_t>		stringLengths;
 } NES_ENGINE_HACK, *PNES_ENGINE_HACK;
@@ -73,9 +74,11 @@ class CNesGameEngineHack
 	BOOL					IsSpinyEggPatched();
 	BOOL					IsInfiniteLivesPatched();
 	BOOL					IsBypassPeachNamePatched();
+	BOOL					IsBypassToadNamePatched();
 	VOID					SetSpinyEggPatch( BOOL fPatch );
 	VOID					SetInfiniteLivesPatch( BOOL fPatch );
 	VOID					SetBypassPeachNamePatch( BOOL fPatch );
+	VOID					SetBypassToadNamePatch(BOOL fPatch);
 
 	VOID					LoadStrings();
 	VOID					DumpStrings();

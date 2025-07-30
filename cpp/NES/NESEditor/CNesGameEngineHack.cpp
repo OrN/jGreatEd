@@ -305,6 +305,7 @@ VOID CNesGameEngineHack::LoadData()
 	m_data.defaultEggBehavior = !IsSpinyEggPatched();
 	m_data.infiniteLives = IsInfiniteLivesPatched();
 	m_data.bypassPeachNameWrite = IsBypassPeachNamePatched();
+	m_data.bypassToadNameWrite = IsBypassToadNamePatched();
 
 	LoadStrings();
 }
@@ -324,6 +325,7 @@ VOID CNesGameEngineHack::DumpData()
 	SetSpinyEggPatch( !m_data.defaultEggBehavior );
 	SetInfiniteLivesPatch( m_data.infiniteLives );
 	SetBypassPeachNamePatch( m_data.bypassPeachNameWrite );
+	SetBypassToadNamePatch( m_data.bypassToadNameWrite );
 
 	DumpStrings();
 }
@@ -347,6 +349,12 @@ BOOL CNesGameEngineHack::IsBypassPeachNamePatched()
 	m_file.SelectFile(48);
 	BOOL patched = (0x60 == m_file.Data<BYTE>(m_eptr[eBypassPeachName].ptr));
 	m_file.EndSnapshot();
+	return patched;
+}
+
+BOOL CNesGameEngineHack::IsBypassToadNamePatched()
+{
+	BOOL patched = (0xEA == m_file.Data<BYTE>(m_eptr[eBypassToadName].ptr));
 	return patched;
 }
 
@@ -421,6 +429,24 @@ VOID CNesGameEngineHack::SetBypassPeachNamePatch( BOOL fPatch )
 		m_file.Data<BYTE>(uPatchPtr) = 0xA2; // LDX
 	}
 	m_file.EndSnapshot();
+}
+
+VOID CNesGameEngineHack::SetBypassToadNamePatch( BOOL fPatch )
+{
+	USHORT uPatchPtr = m_eptr[eBypassToadName].ptr;
+
+	if (fPatch)
+	{
+		m_file.Data<BYTE>(uPatchPtr++) = 0xEA; // NOP
+		m_file.Data<BYTE>(uPatchPtr++) = 0xEA; // NOP
+		m_file.Data<BYTE>(uPatchPtr) = 0xEA; // NOP
+	}
+	else
+	{
+		USHORT marioTextOffset = 0x0B;
+		m_file.Data<BYTE>(uPatchPtr++) = 0xB9; // STA
+		m_file.Data<USHORT>(uPatchPtr) = m_eptr[eStrToadThankYouMessage].ptr + marioTextOffset;
+	}
 }
 
 const NES_ENGINE_HACK & CNesGameEngineHack::Read() const
