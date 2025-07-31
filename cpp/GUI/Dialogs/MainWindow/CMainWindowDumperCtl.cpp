@@ -15,6 +15,8 @@
 
 #include "stdafx.h"
 
+static const int DUMP_VERSION = 1; // Increase this when you make changes to the dump format
+
 VOID CMainWindow::DumpArea( LPCTSTR pszFile )
 {
 	std::vector<BYTE> bData, bLevel, bEnemy;
@@ -25,6 +27,11 @@ VOID CMainWindow::DumpArea( LPCTSTR pszFile )
 	m_cursel.pSublevel->GetLevelBinaryData( bLevel, bEnemy );
 	m_cursel.pSublevel->DumpLoops(vLoops);
 
+	bData.push_back( 'A' );
+	bData.push_back( 'R' );
+	bData.push_back( 'E' );
+	bData.push_back( 'A' );
+	bData.push_back(DUMP_VERSION);
 	bData.push_back( LOBYTE( header.GetRawHeader() ) );
 	bData.push_back( HIBYTE( header.GetRawHeader() ) );
 	bData.push_back( areaType );
@@ -65,6 +72,7 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 	std::vector<NES_LOOP> vLoops;
 	CNesLevelHeader header;
 	NES_LEVEL_TYPE areaType;
+	int version = 0;
 
 	HANDLE hFile = CreateFile( pszFile, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr );
 	if ( INVALID_HANDLE_VALUE != hFile )
@@ -77,14 +85,38 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 				DWORD w;
 				bData.insert( bData.end(), li.QuadPart, 0 );
 				ReadFile( hFile, bData.data(), LODWORD( bData.size() ), &w, nullptr );
+				CloseHandle(hFile);
 
+				// Check signature and get version
+				// If we don't find a signature, we just assume its version 0
 				size_t offset = 0;
-				header.SetRawHeader(bData[offset + 1] << 8 | bData[offset]);
-				offset += 2;
-				areaType = (NES_LEVEL_TYPE)bData[offset++];
+				if (bData[0] == 'A' || bData[1] == 'R' || bData[2] == 'E' || bData[3] == 'A')
+				{
+					version = bData[4];
+					offset = 5;
+
+					if (version > DUMP_VERSION)
+					{
+						ShowAlertF(TEXT("This area file was dumped in a later version of the program, please update"));
+						return;
+					}
+				}
+
+				if (version > 0)
+				{
+					header.SetRawHeader(bData[offset + 1] << 8 | bData[offset]);
+					offset += 2;
+					areaType = (NES_LEVEL_TYPE)bData[offset++];
+				}
+
 				size_t levelSize = bData[offset++];
 				size_t enemySize = bData[offset++];
-				size_t loopSize = bData[offset++];
+				size_t loopSize;
+				
+				if (version > 0)
+				{
+					loopSize = bData[offset++];
+				}
 
 				if ( bData.size() >= levelSize + enemySize)
 				{
@@ -94,16 +126,19 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 					bEnemy.insert( bEnemy.end(), it, it + enemySize );
 
 					// Load loops
-					size_t loopOffset = offset + levelSize + enemySize;
-					for (size_t i = 0; i < loopSize; i++)
+					if (version > 0)
 					{
-						NES_LOOP loop;
-						loop.aptr.bPtr = bData.data()[loopOffset++];
-						loop.bPageNumber = bData.data()[loopOffset++];
-						loop.bHeight = bData.data()[loopOffset++];
-						loop.bSlaveData = bData.data()[loopOffset++];
-						loop.bPageRewind = bData.data()[loopOffset++];
-						vLoops.push_back(loop);
+						size_t loopOffset = offset + levelSize + enemySize;
+						for (size_t i = 0; i < loopSize; i++)
+						{
+							NES_LOOP loop;
+							loop.aptr.bPtr = bData.data()[loopOffset++];
+							loop.bPageNumber = bData.data()[loopOffset++];
+							loop.bHeight = bData.data()[loopOffset++];
+							loop.bSlaveData = bData.data()[loopOffset++];
+							loop.bPageRewind = bData.data()[loopOffset++];
+							vLoops.push_back(loop);
+						}
 					}
 
 					if ( bLevel.size() > 0 && bEnemy.size() > 0 )
@@ -116,9 +151,12 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 							{
 								TakeLevelSnapshot();
 								m_cursel.pSublevel->LoadLevelData( bLevel, bEnemy, vLink );
-								m_cursel.pSublevel->UpdateHeader(header);
-								m_cursel.pSublevel->UpdateAreaType(areaType);
-								m_cursel.pSublevel->LoadLoops(vLoops);
+								if (version > 0)
+								{
+									m_cursel.pSublevel->UpdateHeader(header);
+									m_cursel.pSublevel->UpdateAreaType(areaType);
+									m_cursel.pSublevel->LoadLoops(vLoops);
+								}
 								m_cursel.pSublevel->InitObjects();
 								LoadSubLevel( m_cursel.bWorld, m_cursel.pSublevel );
 							}
@@ -132,7 +170,6 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 				}
 			}
 		}
-		CloseHandle( hFile );
 	}
 	else
 	{
