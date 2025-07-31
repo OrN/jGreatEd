@@ -42,17 +42,22 @@ VOID CFDSDiskSide::LoadNESBank(CFDSStream& stream, FDS_FILE_TYPE type, BYTE ID, 
 
 VOID CFDSDiskSide::LoadNESFiles(CFDSStream& stream)
 {
+	// Read header
 	m_nesHeader = stream.Read<NES_HEADER>();
+
+	// Grab signature
+	LARGE_INTEGER retPtr = stream.CurrentPointer();
+	LARGE_INTEGER sigPtr;
+	sigPtr.QuadPart = 0x8B;
+	stream.Seek(sigPtr, SEEK_SET);
+	UINT signature = stream.Read<UINT>();
+	stream.Seek(retPtr, SEEK_SET);
 
 	DWORD mapper = (m_nesHeader.FLAGS_7.HI_MAPPER << 4) | m_nesHeader.FLAGS_6.LO_MAPPER;
 
 	// Check mapper supported
-	if (mapper != 3) // Check if MMC3
-		throw std::exception("Only MMC3 version of the NES rom is supported");
-
-	// Check if NES 2.0
-	if (m_nesHeader.FLAGS_7.NES2 == 2)
-		throw std::exception("incompatible NES rom is using NES 2.0 format");
+	if (mapper != 3 || m_nesHeader.FLAGS_7.NES2 == 2 || signature != 0x00000000) // Check if MMC3, and Loopy's ROM
+		throw std::exception("Only Loopy's MMC3 version of the ROM is supported");
 
 	LARGE_INTEGER p15;
 	LARGE_INTEGER p16;
