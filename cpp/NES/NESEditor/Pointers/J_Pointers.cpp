@@ -82,6 +82,8 @@ VOID CNesPointers::LoadPointersJ()
 	m_eptr[ eWorldAreasOffsets ].eptr = NES_J_WORLD_AREAS_OFFSETS;
 	m_eptr[ eWorldAreas ].eptr = NES_J_WORLD_AREAS;
 
+	m_eptr[ eStarsRequiredPtr ].eptr = NES_J_STARS_REQUIRED_PTR;
+
 	m_eptr[ eTileListBricksRowTileId ].eptr = NES_J_TILE_BRICK_ROW_BLOCK_ID;
 	m_eptr[ eTileListBridgeTile1 ].eptr = NES_J_TILE_BRIDGE_TILE1;
 	m_eptr[ eTileListBridgeTile2 ].eptr = NES_J_TILE_BRIDGE_TILE2;

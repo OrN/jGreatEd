@@ -40,6 +40,7 @@ typedef struct _tagNES_COIN_PAL_ROTATE_COLOR
 typedef BYTE NES_BOWSER_HAMMERS_WORLD;
 typedef BOOL NES_DEFAULT_SPINY_EGG_BEHAVIOR;
 typedef BOOL NES_INFINITE_LIVES;
+typedef BYTE NES_STARS_REQUIRED_WORLDA;
 typedef BOOL NES_BYPASS_NAME_WRITE;
 
 typedef struct _tagNES_TIMER_VALUES
@@ -58,6 +59,7 @@ typedef struct _tagNES_ENGINE_HACK
 	NES_TIMER_VALUES					timerValues;
 	NES_DEFAULT_SPINY_EGG_BEHAVIOR		defaultEggBehavior;
 	NES_INFINITE_LIVES					infiniteLives;
+	NES_STARS_REQUIRED_WORLDA			starsRequiredWorldA;
 	NES_BYPASS_NAME_WRITE				bypassPeachNameWrite;
 	NES_BYPASS_NAME_WRITE				bypassToadNameWrite;
 	std::map<NES_EPOINTERS, CString>	strings;

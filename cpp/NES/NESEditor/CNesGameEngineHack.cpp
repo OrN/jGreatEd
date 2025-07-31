@@ -306,6 +306,8 @@ VOID CNesGameEngineHack::LoadData()
 
 	m_data.defaultEggBehavior = !IsSpinyEggPatched();
 	m_data.infiniteLives = IsInfiniteLivesPatched();
+	m_data.starsRequiredWorldA = m_file.Data<BYTE>(m_eptr[eStarsRequiredPtr].ptr);
+
 	m_data.bypassPeachNameWrite = IsBypassPeachNamePatched();
 	m_data.bypassToadNameWrite = IsBypassToadNamePatched();
 
@@ -326,6 +328,8 @@ VOID CNesGameEngineHack::DumpData()
 	m_file.Data< NES_BOWSER_HAMMERS_WORLD>( m_eptr[ eBowserHammersWorld ].ptr ) = m_data.bowserHammers;
 	SetSpinyEggPatch( !m_data.defaultEggBehavior );
 	SetInfiniteLivesPatch( m_data.infiniteLives );
+	m_file.Data<BYTE>( m_eptr[eStarsRequiredPtr].ptr ) = m_data.starsRequiredWorldA;
+
 	SetBypassPeachNamePatch( m_data.bypassPeachNameWrite );
 	SetBypassToadNamePatch( m_data.bypassToadNameWrite );
 

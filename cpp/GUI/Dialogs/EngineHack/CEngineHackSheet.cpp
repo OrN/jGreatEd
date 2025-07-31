@@ -456,13 +456,19 @@ CEngineHacks::CEngineHacks( HINSTANCE hInstance, NES_ENGINE_HACK & hack )
 	: CEngineHackDlg( hInstance, TEXT( "Hacks" ), hack ),
 	m_stSpinyEggBehavior( hInstance, TEXT( "Spiny Egg falling behavior:" ), 20, 22, 120, 10 ),
 	m_stInfiniteLives(hInstance, TEXT("Infinite lives:"), 20, 40, 120, 10),
+	m_stStarsRequired(hInstance, TEXT("Stars Required for World A:"), 20, 58, 120, 10),
 	m_cbSpinyEggBehavior( hInstance, 0x100, WC_COMBOBOX, nullptr, 150, 20, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL ),
-	m_cbInfiniteLives(hInstance, 0x101, WC_COMBOBOX, nullptr, 150, 38, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL)
+	m_cbInfiniteLives(hInstance, 0x101, WC_COMBOBOX, nullptr, 150, 38, -20, 150, WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL),
+	m_edStarsRequired(hInstance, 0x102, nullptr, 150, 56, 40, 13),
+	m_udStarsRequired(hInstance, 0x103)
 {
 	pushctl(m_stSpinyEggBehavior);
 	pushctl(m_stInfiniteLives);
+	pushctl(m_stStarsRequired);
 	pushctl(m_cbSpinyEggBehavior);
 	pushctl(m_cbInfiniteLives);
+	pushctl(m_edStarsRequired);
+	pushctl(m_udStarsRequired);
 }
 
 BOOL CEngineHacks::OnInit( LPARAM lParam )
@@ -479,6 +485,10 @@ BOOL CEngineHacks::OnInit( LPARAM lParam )
 
 	m_cbInfiniteLives.cSendMessage(CB_SETCURSEL, (Hack().infiniteLives ? 1 : 0));
 
+	// Stars Required for World A
+	m_udStarsRequired.SetRange(24, 0);
+	m_udStarsRequired.Value(Hack().starsRequiredWorldA);
+
 	// Default focus
 	SetFocus(m_cbSpinyEggBehavior);
 	
@@ -489,13 +499,14 @@ BOOL CEngineHacks::PSOnApply( BOOL fOkPressed )
 {
 	Hack().defaultEggBehavior = ( !m_cbSpinyEggBehavior.cSendMessage( CB_GETCURSEL ) );
 	Hack().infiniteLives = (m_cbInfiniteLives.cSendMessage(CB_GETCURSEL));
+	Hack().starsRequiredWorldA = static_cast<BYTE>(m_udStarsRequired.Value());
 
 	return PSNRET_NOERROR;
 }
 
 VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 {
-	if ( CBN_SELENDOK == uCmd )
+	if ( CBN_SELENDOK == uCmd || EN_CHANGE == uCmd)
 	{
 		Changed();
 	}

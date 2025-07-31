@@ -102,6 +102,8 @@ typedef enum _tagNES_EPOINTERS
 	eWorldAreasOffsets,
 	eWorldAreas,
 
+	eStarsRequiredPtr,
+
 	eTileListBricksRowTileId,
 	eTileListBridgeTile1,
 	eTileListBridgeTile2,

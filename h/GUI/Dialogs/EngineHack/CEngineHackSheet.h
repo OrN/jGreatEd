@@ -141,8 +141,11 @@ class CEngineHacks: public CEngineHackDlg
 {
 	CStaticControl			m_stSpinyEggBehavior;
 	CStaticControl			m_stInfiniteLives;
+	CStaticControl			m_stStarsRequired;
 	CControl				m_cbSpinyEggBehavior;
 	CControl				m_cbInfiniteLives;
+	CEditControl			m_edStarsRequired;
+	CUpDownControl			m_udStarsRequired;
 
 	BOOL					OnInit( LPARAM lParam ) override;
 	BOOL					PSOnApply( BOOL fOkPressed ) override;
