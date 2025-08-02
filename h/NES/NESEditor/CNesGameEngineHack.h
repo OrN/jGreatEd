@@ -87,7 +87,6 @@ class CNesGameEngineHack
 
 	VOID					DecodeString(NES_EPOINTERS ptr);
 	VOID					DecodeString(NES_EPOINTERS ptr, size_t length);
-	VOID					DecodeString(USHORT uPatchPtr, size_t length);
 
 	VOID					EncodeString(NES_EPOINTERS ptr);
 	VOID					EncodeString(NES_EPOINTERS ptr, size_t length);
