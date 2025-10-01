@@ -516,29 +516,29 @@ VOID CEngineHacks::OnCommand( USHORT uCmd, USHORT uId, HWND hCtl )
 
 VOID CEngineStrings::SanitizeString(NES_EPOINTERS ptr)
 {
-	CString& str = Hack().strings[ptr];
-	size_t maxLength = Hack().stringLengths[ptr];
+	CString& inputString = Hack().strings[ptr];
+	size_t maxStringLength = Hack().stringLengths[ptr];
 
 	// Make string uppercase
-	str.MakeUpper();
+	inputString.MakeUpper();
 
-	size_t length = 0;
-	for (int i = 0; i < str.GetLength(); i++)
+	size_t finalStringLength = 0;
+	for (int i = 0; i < inputString.GetLength(); i++)
 	{
-		if (length == maxLength)
+		if (finalStringLength == maxStringLength)
 		{
-			str = str.Left(i);
+			inputString = inputString.Left(i);
 			break;
 		}
 
-		wchar_t character = str.GetAt(i);
+		wchar_t character = inputString.GetAt(i);
 
 		if (character == '$') // Special Function
 			i += 2;
 
 		// TODO: REMOVE INVALID CHARACTERS FROM STRING
 
-		length++;
+		finalStringLength++;
 	}
 }
 
