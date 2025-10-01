@@ -730,7 +730,8 @@ BOOL CEngineStrings::PSOnApply(BOOL fOkPressed)
 	UpdateString(eStrPeachMarioMessage);
 	UpdateString(eStrPeachLuigiMessage);
 
-	DWORD selection = m_cbBypassName.cSendMessage(CB_GETCURSEL);
+	const auto selection = m_cbBypassName.cSendMessage(CB_GETCURSEL);
+
 	Hack().bypassPeachNameWrite = (selection == 2 || selection == 3);
 	Hack().bypassToadNameWrite = (selection == 1 || selection == 3);
 
