@@ -132,13 +132,13 @@ VOID CMainWindow::LoadArea( LPCTSTR pszFile )
 						size_t loopOffset = offset + levelSize + enemySize;
 						for (size_t i = 0; i < loopSize; i++)
 						{
-							NES_LOOP loop;
-							loop.aptr.bPtr = bData.data()[loopOffset++];
-							loop.bPageNumber = bData.data()[loopOffset++];
-							loop.bHeight = bData.data()[loopOffset++];
-							loop.bSlaveData = bData.data()[loopOffset++];
-							loop.bPageRewind = bData.data()[loopOffset++];
-							vLoops.push_back(loop);
+							vLoops.emplace_back({});
+							NES_LOOP & loop = vLoops.back();
+							loop.aptr.bPtr = bData[loopOffset++];
+							loop.bPageNumber = bData[loopOffset++];
+							loop.bHeight = bData[loopOffset++];
+							loop.bSlaveData = bData[loopOffset++];
+							loop.bPageRewind = bData[loopOffset++];
 						}
 					}
 
