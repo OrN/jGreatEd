@@ -44,7 +44,8 @@ VOID CMainWindow::DumpArea( LPCTSTR pszFile )
 	// Dump Loops
 	for (size_t i = 0; i < vLoops.size(); i++)
 	{
-		NES_LOOP loop = vLoops[i];
+		const auto & loop = vLoops[i];
+
 		bData.push_back(loop.aptr.bPtr);
 		bData.push_back(loop.bPageNumber);
 		bData.push_back(loop.bHeight);
